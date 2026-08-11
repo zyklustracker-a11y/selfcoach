@@ -70,7 +70,12 @@ service cloud.firestore {
             && d.tags is list && d.tags.size() <= 30
             && d.keywords is list && d.keywords.size() <= 200
             && d.dayKey is string && d.dayKey.size() == 10
-            && d.weekKey is string && d.weekKey.size() == 8;
+            && d.weekKey is string && d.weekKey.size() == 8
+            // Flashback bookkeeping (concept 6.7); absent until the first answer.
+            && d.get('reviewCount', 0) is int
+            && d.get('reviewCount', 0) >= 0
+            && d.get('reviewHistory', []) is list
+            && d.get('reviewHistory', []).size() <= 60;
         }
 
         allow read, delete: if isOwner(userId);

@@ -205,7 +205,7 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | **fertig** |
 | 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | **fertig** |
 | 8 | Feinschliff: Offline-Indikator, Leerzustände, Onboarding, Einstellungen, Export, Deploy | **fertig** |
-| 9 | Wiedervorlage: `nextReviewAt`, Rückblende, `reviewHistory`, 7 → 30 → 90 Tage | offen |
+| 9 | Wiedervorlage: `nextReviewAt`, Rückblende, `reviewHistory`, 7 → 30 → 90 Tage | **fertig** |
 
 `/styleguide` bleibt erreichbar, ist aber **nirgends verlinkt** — Entwicklungswerkzeug,
 kein Teil der App.

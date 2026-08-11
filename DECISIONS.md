@@ -193,3 +193,31 @@ erreichbar ist — sie zeigt keine Daten, nur Bausteine.
 Sie hat ihren Zweck erfüllt (`auth/api-key-not-valid` sichtbar gemacht) und ist jetzt raus.
 Grund: Fehlercodes gehören nicht in eine Oberfläche, die abends im Bett benutzt wird.
 Dagegen spricht, dass die nächste Login-Störung wieder schwerer zu diagnostizieren ist.
+
+---
+
+## Phase 9 — Wiedervorlage (11.08.2026)
+
+### Nach 90 Tagen ist Schluss
+Konzept 6.7 nennt 7, 30 und 90 Tage, sagt aber nicht, was danach kommt. Gewählt: Nach der
+dritten Rückblende wird `nextReviewAt` auf `null` gesetzt, der Eintrag meldet sich nicht mehr
+von selbst. Grund: Wer einen Vorsatz über ein Jahr dreimal bestätigt hat, braucht die Frage
+nicht mehr; endlose Wiedervorlage würde den Heute-Screen mit alten Karten verstopfen.
+Dagegen spricht, dass sehr alte Erkenntnisse irgendwann ganz verschwinden — sie bleiben im
+Archiv und in der Suche.
+
+### „Erneut vornehmen" beginnt wieder bei 7 Tagen
+Gewählt: `reviewCount` zurück auf 0. Grund: Sich etwas neu vorzunehmen heißt anfangen, nicht
+fortsetzen — und dann ist die kurze Schlaufe die richtige. Dagegen spricht, dass ein oft
+erneuertes Vorhaben häufig auftaucht; genau das ist der Punkt.
+
+### Genau eine Rückblende pro Tag
+Gewählt: Der Heute-Screen zeigt nur die älteste fällige Karte. Grund: Drei Karten
+gleichzeitig sind eine Warteschlange zum Abarbeiten, keine Frage zum Nachdenken — und
+`DESIGN.md` erlaubt ohnehin nur eine Karte. Dagegen spricht, dass sich bei längerer Abwesenheit
+ein Rückstand bildet; er wird Tag für Tag abgebaut, älteste zuerst.
+
+### Einträge von heute lösen keine Rückblende aus
+Ein Eintrag mit `dayKey` von heute wird übersprungen, auch wenn `nextReviewAt` fällig wäre
+(passiert nur bei manipulierten Daten). Grund: Sich selbst am selben Tag zu fragen, ob man das
+noch lebt, ist unsinnig.

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Card, Fab } from '@/components'
 import { useBooks } from '@/features/books'
-import { EntryRow, useEntries } from '@/features/entries'
+import { EntryRow, FlashbackCard, useEntries } from '@/features/entries'
 import { isReviewOpen, isSunday, useReviews } from '@/features/reviews'
 import { TodoItem, useTodos } from '@/features/todos'
 import { t } from '@/lib/strings'
@@ -21,7 +21,7 @@ const TODAY = new Intl.DateTimeFormat('de-DE', {
 export function TodayScreen() {
   const navigate = useNavigate()
   const { activeBook } = useBooks()
-  const { today } = useEntries()
+  const { today, dueFlashbacks } = useEntries()
   const { today: todosToday } = useTodos()
   const { current: currentReview } = useReviews()
   const reviewOpen = isReviewOpen()
@@ -67,6 +67,14 @@ export function TodayScreen() {
           </>
         )}
       </div>
+
+      {/* Exactly one at a time, oldest first — three cards at once would be a
+          queue to work through, not a question to sit with. */}
+      {dueFlashbacks[0] && (
+        <section className="mt-[30px]">
+          <FlashbackCard entry={dueFlashbacks[0]} />
+        </section>
+      )}
 
       {reviewOpen && (
         <section className="mt-[30px]">

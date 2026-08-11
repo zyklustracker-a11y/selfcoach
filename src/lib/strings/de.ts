@@ -135,6 +135,14 @@ export const de = {
     open2: 'Offen',
     doneAt: 'Erledigt',
   },
+  flashback: {
+    title: (days: number) => `Rückblende · vor ${days} Tagen`,
+    titlePlain: 'Rückblende',
+    question: 'Lebst du das noch?',
+    stillTrue: 'Ja, läuft',
+    again: 'Erneut vornehmen',
+    obsolete: 'Nicht mehr relevant',
+  },
   today: {
     noEntry: 'Heute noch kein Eintrag.',
     prompt: 'Drei Fragen, unter 90 Sekunden.',

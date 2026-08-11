@@ -27,8 +27,17 @@ export function weekKey(date: Date = new Date()): string {
   return `${thursday.getUTCFullYear()}-W${pad(week)}`
 }
 
-/** First review interval. The 30 and 90 day steps follow in phase 9. */
-export const FIRST_REVIEW_DAYS = 7
+/**
+ * 7 → 30 → 90 days (concept 6.7). After the last step an entry stops coming back
+ * on its own; three passes over a year are enough to know whether it stuck.
+ */
+export const REVIEW_INTERVALS = [7, 30, 90] as const
+export const FIRST_REVIEW_DAYS = REVIEW_INTERVALS[0]
+
+/** Days until the next flashback, or null when the ladder is used up. */
+export function nextReviewInterval(reviewCount: number): number | null {
+  return REVIEW_INTERVALS[reviewCount] ?? null
+}
 
 export function addDays(date: Date, days: number): Date {
   const result = new Date(date)

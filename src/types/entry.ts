@@ -8,6 +8,15 @@ import type { Timestamp } from 'firebase/firestore'
  */
 export type EntryType = 'insight' | 'book_summary'
 
+/** What the user answered when an entry resurfaced (concept 6.7). */
+export type FlashbackAnswer = 'still_true' | 'again' | 'obsolete'
+
+export interface ReviewHistoryItem {
+  /** dayKey of the answer. */
+  day: string
+  answer: FlashbackAnswer
+}
+
 interface EntryBase {
   /** Denormalised so archive lists render without a second read (concept 9). */
   bookId: string | null
@@ -22,8 +31,14 @@ interface EntryBase {
   dayKey: string
   /** ISO week, `2026-W33`. */
   weekKey: string
-  /** Every entry resurfaces; the flashback itself arrives in phase 9. */
+  /**
+   * When this entry surfaces again. Null once it has been marked obsolete —
+   * then it stays in the archive but never comes back on its own.
+   */
   nextReviewAt: Timestamp | null
+  /** How often it has already come back; drives the 7 → 30 → 90 ladder. */
+  reviewCount?: number
+  reviewHistory?: ReviewHistoryItem[]
   createdAt: Timestamp
   updatedAt: Timestamp
 }

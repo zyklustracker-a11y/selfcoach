@@ -2,6 +2,8 @@ export { BOOK_STATUSES } from './book'
 export type { Book, BookInput, BookStatus, BookWithId } from './book'
 export { entryHeadline, entrySupport } from './entry'
 export type {
+  FlashbackAnswer,
+  ReviewHistoryItem,
   BookSummaryEntry,
   BookSummaryInput,
   Entry,

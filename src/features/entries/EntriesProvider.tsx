@@ -12,6 +12,11 @@ interface EntriesContextValue {
   today: EntryWithId[]
   /** Every tag ever used, for the autocomplete in the form. */
   knownTags: string[]
+  /**
+   * Entries whose flashback is due, oldest first. Checked on every app start —
+   * without a server there is nothing to trigger it on a schedule (concept 6.7).
+   */
+  dueFlashbacks: EntryWithId[]
 }
 
 const EntriesContext = createContext<EntriesContextValue | null>(null)
@@ -54,6 +59,15 @@ export function EntriesProvider({ children }: { children: ReactNode }) {
       knownTags: [...new Set(entries.flatMap((entry) => entry.tags))].sort((a, b) =>
         a.localeCompare(b, 'de'),
       ),
+      dueFlashbacks: entries
+        .filter((entry) => {
+          const due = entry.nextReviewAt?.toDate()
+          // Today's own entry is never a flashback.
+          return due !== undefined && due.getTime() <= Date.now() && entry.dayKey !== key
+        })
+        .sort(
+          (a, b) => (a.nextReviewAt?.toMillis() ?? 0) - (b.nextReviewAt?.toMillis() ?? 0),
+        ),
     }
   }, [entries, loading, error])
 

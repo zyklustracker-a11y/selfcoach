@@ -15,10 +15,17 @@ import {
   type Unsubscribe,
 } from 'firebase/firestore'
 
-import { addDays, dayKey, FIRST_REVIEW_DAYS, weekKey } from '@/lib/dates'
+import {
+  addDays,
+  dayKey,
+  FIRST_REVIEW_DAYS,
+  nextReviewInterval,
+  REVIEW_INTERVALS,
+  weekKey,
+} from '@/lib/dates'
 import { db } from '@/lib/firebase'
 import { buildKeywords } from '@/lib/keywords'
-import type { Entry, EntryInput, EntryWithId } from '@/types'
+import type { Entry, EntryInput, EntryWithId, FlashbackAnswer } from '@/types'
 
 function entriesRef(uid: string): CollectionReference<Entry> {
   return collection(db, 'users', uid, 'entries') as CollectionReference<Entry>
@@ -122,4 +129,38 @@ export async function updateEntry(
 
 export async function deleteEntry(uid: string, entryId: string): Promise<void> {
   await deleteDoc(entryRef(uid, entryId))
+}
+
+/**
+ * Records how a flashback was answered and schedules the next one (concept 6.7).
+ *
+ * - `still_true` moves one rung up the ladder: 7 → 30 → 90, then it rests.
+ * - `again` restarts at 7 days, because taking it on afresh means starting over.
+ * - `obsolete` clears the date; the entry stays in the archive but stops asking.
+ */
+export async function answerFlashback(
+  uid: string,
+  entry: EntryWithId,
+  answer: FlashbackAnswer,
+): Promise<void> {
+  const now = new Date()
+  const seen = entry.reviewCount ?? 0
+
+  let next: Timestamp | null = null
+  let count = seen
+  if (answer === 'still_true') {
+    const days = nextReviewInterval(seen + 1)
+    next = days === null ? null : Timestamp.fromDate(addDays(now, days))
+    count = seen + 1
+  } else if (answer === 'again') {
+    next = Timestamp.fromDate(addDays(now, REVIEW_INTERVALS[0]))
+    count = 0
+  }
+
+  await updateDoc(entryRef(uid, entry.id), {
+    nextReviewAt: next,
+    reviewCount: count,
+    reviewHistory: [...(entry.reviewHistory ?? []), { day: dayKey(now), answer }],
+    updatedAt: serverTimestamp(),
+  })
 }

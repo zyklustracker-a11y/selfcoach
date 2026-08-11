@@ -2,3 +2,4 @@ export { EntriesProvider, useEntries, useEntriesForBook, useEntry } from './Entr
 export { EntryDetailScreen } from './EntryDetailScreen'
 export { EntryFormScreen } from './EntryFormScreen'
 export { EntryRow } from './EntryRow'
+export { FlashbackCard } from './FlashbackCard'
