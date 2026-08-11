@@ -103,7 +103,6 @@ export function ReviewFlowScreen() {
   return (
     <div
       className="flex min-h-full flex-col px-6.5"
-      style={{ paddingBottom: 'calc(40px + env(safe-area-inset-bottom))' }}
     >
       <div className="flex items-center justify-between">
         <span className="font-mono text-caption uppercase text-text-muted">

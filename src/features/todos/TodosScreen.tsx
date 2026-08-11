@@ -34,7 +34,7 @@ export function TodosScreen() {
   const list = lists[view]
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <h1 className="font-serif text-screen-title text-text-primary">{t.nav.todos}</h1>
 
       <div className="mt-5 flex flex-wrap gap-2">

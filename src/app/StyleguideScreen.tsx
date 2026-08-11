@@ -26,9 +26,9 @@ export function StyleguideScreen() {
   const [tagSelected, setTagSelected] = useState(false)
 
   return (
-    <div className="min-h-full bg-bg-base">
+    <div className="app-shell relative mx-auto flex max-w-app flex-col overflow-hidden bg-bg-base">
       <header
-        className="flex items-center justify-between px-6.5 pb-4"
+        className="shrink-0 flex items-center justify-between px-6.5 pb-4"
         style={{ paddingTop: 'max(8px, env(safe-area-inset-top))' }}
       >
         <div>
@@ -44,10 +44,7 @@ export function StyleguideScreen() {
         </button>
       </header>
 
-      <main
-        className="px-6.5"
-        style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}
-      >
+      <main className="scroll-area flex-1 px-6.5 pb-24">
         <p className="text-body text-text-muted">{t.styleguide.subtitle}</p>
 
         <Section title="Farben">

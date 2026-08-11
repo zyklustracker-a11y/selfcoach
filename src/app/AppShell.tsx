@@ -42,9 +42,9 @@ export function AppShell() {
       <EntriesProvider>
         <TodosProvider>
           <ReviewsProvider>
-            <div className="mx-auto flex min-h-full max-w-app flex-col">
+            <div className="app-shell relative mx-auto flex max-w-app flex-col overflow-hidden">
               <header
-                className="flex items-center justify-between px-6.5"
+                className="shrink-0 flex items-center justify-between px-6.5"
                 style={{ paddingTop: 'max(8px, env(safe-area-inset-top))' }}
               >
                 {/* Offline is a state, not a failure — muted, never in danger red. */}
@@ -61,7 +61,7 @@ export function AppShell() {
                 </button>
               </header>
 
-              <main className="flex-1">
+              <main className="scroll-area flex-1 pb-24">
                 <Outlet />
               </main>
 

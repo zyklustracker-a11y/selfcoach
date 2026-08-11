@@ -96,7 +96,6 @@ export function BookFormScreen() {
     <form
       onSubmit={(event) => void onSubmit(event)}
       className="px-6.5"
-      style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}
     >
       <div className="flex items-baseline justify-between">
         <h1 className="font-serif text-screen-title text-text-primary">

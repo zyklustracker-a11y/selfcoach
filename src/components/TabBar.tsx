@@ -13,12 +13,13 @@ export interface TabBarProps {
 
 /**
  * No icons on purpose: each tab is a 16x2px stroke above its label
- * (DESIGN.md section 5). The bar is fixed and pads itself against the home indicator.
+ * (DESIGN.md section 5). It is the last child of the shell rather than a fixed
+ * element, and pads itself against the home indicator.
  */
 export function TabBar({ items, activeKey, onSelect }: TabBarProps) {
   return (
     <nav
-      className="fixed bottom-0 left-1/2 z-30 w-full max-w-app -translate-x-1/2 border-t border-border bg-bg-base"
+      className="shrink-0 border-t border-border bg-bg-base"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="flex h-14">

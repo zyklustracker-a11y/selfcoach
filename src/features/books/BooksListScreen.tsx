@@ -16,7 +16,7 @@ export function BooksListScreen() {
   })).filter((group) => group.books.length > 0)
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <h1 className="font-serif text-screen-title text-text-primary">{t.books.title}</h1>
       {books.length > 0 && (
         <p className="mt-2 font-mono text-caption uppercase text-text-muted">

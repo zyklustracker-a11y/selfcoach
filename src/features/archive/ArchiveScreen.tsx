@@ -73,7 +73,7 @@ export function ArchiveScreen() {
   const hasFilter = period !== 'all' || book !== null || tag !== null || implementation !== 'all'
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <h1 className="font-serif text-screen-title text-text-primary">{t.nav.archive}</h1>
       <p className="mt-2 font-mono text-caption uppercase text-text-muted">
         {t.archive.count(view === 'reviews' ? reviews.length : filtered.length)}

@@ -30,7 +30,7 @@ export function TodayScreen() {
   const reviewDone = currentReview?.completedAt != null
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <div className="flex items-baseline justify-between gap-3">
         <p className="font-mono text-caption uppercase text-text-muted">{TODAY.format(new Date())}</p>
         {streak > 0 && (

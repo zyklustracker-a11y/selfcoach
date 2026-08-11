@@ -34,7 +34,7 @@ export function EntryDetailScreen() {
   }
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <p className="font-mono text-caption uppercase text-text-muted">
         {[created ? DATE.format(created) : null, entry.bookTitle, entry.page ? t.entries.page(entry.page) : null]
           .filter(Boolean)

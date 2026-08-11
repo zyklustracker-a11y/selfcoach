@@ -15,7 +15,7 @@ starten. Der Safari-Tab prüft den Standalone-Modus nicht.
 | # | Schritt | Erwartet |
 |---|---|---|
 | 1 | App vom Home-Bildschirm starten | Startbild in Dunkelbraun `#16130F`, **kein weißer Blitz** |
-| 2 | Oben und unten schauen | Kopfzeile unter der Notch, Tab-Bar über dem Home-Indikator |
+| 2 | Oben und unten schauen | Kopfzeile unter der Notch, Tab-Bar **bündig unten**, direkt über dem Home-Indikator, keine Lücke darunter |
 | 3 | Über den oberen Rand hinausziehen | Kein Gummiband-Effekt der App-Shell |
 | 4 | `/styleguide` aufrufen | Serif für Eigenes, Sans für die App, Mono nur für Datum/Zahlen |
 | 5 | In ein Textfeld tippen | Safari zoomt **nicht** hinein |

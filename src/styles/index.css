@@ -38,6 +38,14 @@
     box-shadow: var(--focus-ring);
   }
 
+  /* The app shell spans exactly the viewport. The tab bar is the last child in
+     flow rather than a fixed element, so nothing can leave a gap beneath it when
+     the layout viewport turns out shorter than the screen. */
+  .app-shell {
+    height: 100vh;
+    height: 100dvh;
+  }
+
   /* Scroll containers inside the shell. Momentum scrolling stays on, the bounce
      at the edges does not. */
   .scroll-area {

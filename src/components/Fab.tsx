@@ -12,10 +12,10 @@ export interface FabProps {
  */
 export function Fab({ onClick, label, disabled = false }: FabProps) {
   return (
-    // The wrapper keeps the button flush with the app column rather than the
-    // window edge, which only differ on a screen wider than a phone.
+    // Anchored to the shell, not the viewport: the shell is the positioned
+    // ancestor, so the button sits above the tab bar however tall the screen is.
     <div
-      className="pointer-events-none fixed inset-x-0 z-40 mx-auto flex max-w-app justify-end px-6.5"
+      className="pointer-events-none absolute inset-x-0 z-40 flex justify-end px-6.5"
       style={{ bottom: 'calc(56px + env(safe-area-inset-bottom) + 8px)' }}
     >
       <button

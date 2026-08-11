@@ -274,3 +274,16 @@ gespeicherte Statistik Reads spart; bei einem Nutzer ist das keine Rechnung.
 ### `updateTodo` und `deleteTodo` gelöscht
 Ungenutzter Code im Repository. Wer ein To-do loswerden will, verwirft es — der Ursprungsverweis
 bleibt so erhalten, statt die Spur zu tilgen.
+
+### Tab-Bar liegt im Fluss statt `position: fixed` (11.08.2026)
+Auf dem iPhone stand die Tab-Bar nicht am unteren Rand, sondern rund eine Browserleiste
+darüber: `fixed; bottom: 0` bezieht sich auf das Layout-Viewport, und wenn das kürzer ist als
+der Bildschirm, sitzt die Leiste zu hoch. Gewählt: Die Shell ist eine Flex-Spalte über
+`100dvh` (mit `100vh` als Rückfall), Kopfzeile und Tab-Bar sind `shrink-0`, dazwischen der
+Scrollbereich. Damit liegt die Leiste konstruktiv unten, unabhängig davon, was das Viewport
+meldet. Der FAB hängt jetzt an der Shell statt am Viewport.
+Nebeneffekt: Die 130-px-Bodenpolster in jedem Screen entfallen, weil die Leiste den Inhalt
+nicht mehr überlagert. Geprüft bei 390×844, 440×956 und 1440×900 — Unterkante exakt auf
+Viewporthöhe, Lücke 0 px.
+**Falsche Annahme meinerseits:** Ich hatte `fixed; bottom: 0` für gleichbedeutend mit
+„Bildschirmunterkante" gehalten. Auf iOS ist es das nicht zuverlässig.

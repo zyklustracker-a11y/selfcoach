@@ -166,7 +166,6 @@ export function EntryFormScreen() {
       onSubmit={(event) => void onSubmit(event)}
       className="px-6.5"
       aria-label={isSummary ? t.entries.summaryTitle : isEdit ? t.entries.editTitle : t.entries.newTitle}
-      style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}
     >
       {/* Mockup 2a: a slim action row, no screen title. Saving must not require
           scrolling past the optional fields first. */}

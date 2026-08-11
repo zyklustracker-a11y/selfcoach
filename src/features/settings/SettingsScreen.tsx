@@ -76,7 +76,7 @@ export function SettingsScreen() {
   }
 
   return (
-    <div className="px-6.5" style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
+    <div className="px-6.5">
       <div className="flex items-baseline justify-between">
         <h1 className="font-serif text-screen-title text-text-primary">{t.nav.settings}</h1>
         <Button variant="ghost" onClick={() => navigate(-1)}>
