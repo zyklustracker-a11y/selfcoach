@@ -127,3 +127,30 @@ Handlungsabsicht die Liste füllen — die gibt es hier aber nicht, `action` ist
 Gewählt: In „Zitate" steht das Zitat groß und kursiv mit Buch und Seite darunter, statt der
 üblichen Eintragszeile. Grund: Wer Zitate durchsieht, sucht den Wortlaut. Dagegen spricht ein
 Bruch mit dem sonst einheitlichen Listenbild.
+
+---
+
+## Phase 7 — Wochenreview (11.08.2026)
+
+### Frage 1 ist eine Auswahl, die übrigen sind Freitext
+Gewählt: Schritt 1 zeigt die Wocheneinträge zum Antippen und speichert `topInsightIds[]`;
+Schritte 2–5 sind Textfelder. Grund: Konzept 6.5 formuliert Frage 1 ausdrücklich als „Auswahl
+aus den Wocheneinträgen". Dagegen spricht, dass „Leitfragen bearbeiten" (Phase 8) damit nur
+für die Fragen 2–5 sinnvoll ist — genau so ist es umgesetzt.
+
+### Kein eigener Bewertungsschritt für Vorsätze
+Konzept 6.5 hat als Frage 6 die 0–3-Bewertung. Die Skala ist gestrichen (`CLAUDE.md` 7.1).
+Gewählt: Die offenen Vorsätze werden im letzten Schritt **angezeigt**, aber nicht bewertet.
+Grund: Der Nutzer soll sie beim Formulieren des Wochenfokus vor Augen haben. Dagegen spricht,
+dass damit keine Umsetzungsquote für Vorsätze entsteht — gewollt, siehe „kein Score".
+
+### Jeder Schritt schreibt, nicht nur der letzte
+Gewählt: `saveReview` bei jedem „Weiter" und bei „Später". Grund: Konzept verlangt
+Unterbrechbarkeit; ein Schreibvorgang pro Frage ist bei fünf Fragen pro Woche vernachlässigbar.
+Dagegen spricht, dass ein abgebrochenes Review als unvollständiges Dokument liegen bleibt —
+es taucht deshalb nicht im Archiv auf, sondern nur als „Weitermachen".
+
+### Reviewkarte ist die eine erlaubte Akzentfläche
+`DESIGN.md` erlaubt neben dem FAB genau eine akzentgetönte Fläche, und nennt die
+Wochenreview-Karte als diese Ausnahme. Gewählt: `bg-accent-quiet`, ab Samstag, sonntags mit
+„Sonntag" statt „Wochenreview" beschriftet. Dagegen spricht nichts.

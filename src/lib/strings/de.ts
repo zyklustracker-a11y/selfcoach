@@ -234,9 +234,26 @@ export const de = {
     },
   },
   reviews: {
+    title: 'Wochenreview',
     weekLabel: (weekKey: string) => `Woche ${weekKey.slice(6)}/${weekKey.slice(0, 4)}`,
     entryCount: (n: number) => (n === 1 ? '1 Eintrag' : `${n} Einträge`),
     noFocus: 'Ohne Fokus abgeschlossen.',
+    stepOf: (step: number, total: number) => `Frage ${step} von ${total}`,
+    finish: 'Review abschließen',
+    resume: 'Weitermachen',
+    notFound: 'Dieses Review gibt es nicht.',
+    todoStats: (done: number, total: number) => `${done} von ${total} umgesetzt`,
+    patternHelp: 'Häufig diese Woche',
+    principlesInView: 'Deine laufenden Vorsätze',
+    noEntriesThisWeek: 'Diese Woche gibt es keine Einträge zur Auswahl.',
+    // On the Today screen from Saturday on (CLAUDE.md 7.1).
+    cardTitle: 'Wochenreview',
+    cardSunday: 'Sonntag',
+    cardBody: (entries: number, questions: number) =>
+      `${questions} Fragen zu deinen ${entries} Einträgen dieser Woche.`,
+    cardStart: 'Beginnen',
+    cardResume: 'Weitermachen',
+    cardDone: 'Diese Woche ist reflektiert.',
   },
   review: {
     // The five guiding questions from concept 6.5. Question 6 was dropped with the

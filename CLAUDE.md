@@ -203,7 +203,7 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | **fertig** — Rules deployen nicht vergessen |
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | **fertig** |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | **fertig** |
-| 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | offen |
+| 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | **fertig** |
 | 8 | Feinschliff: Offline-Indikator, Leerzustände, Onboarding, Einstellungen, Export, Deploy | offen |
 | 9 | Wiedervorlage: `nextReviewAt`, Rückblende, `reviewHistory`, 7 → 30 → 90 Tage | offen |
 

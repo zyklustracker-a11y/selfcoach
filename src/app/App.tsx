@@ -4,6 +4,7 @@ import { AuthGuard, AuthProvider, LoginScreen } from '@/features/auth'
 import { BookDetailScreen, BookFormScreen, BooksListScreen } from '@/features/books'
 import { EntryDetailScreen, EntryFormScreen } from '@/features/entries'
 import { ArchiveScreen } from '@/features/archive'
+import { ReviewDetailScreen, ReviewFlowScreen } from '@/features/reviews'
 import { TodosScreen } from '@/features/todos'
 
 import { AppShell } from './AppShell'
@@ -35,6 +36,8 @@ export function App() {
             <Route path="/books/:bookId" element={<BookDetailScreen />} />
             <Route path="/books/:bookId/edit" element={<BookFormScreen />} />
             <Route path="/archive" element={<ArchiveScreen />} />
+            <Route path="/reviews/current" element={<ReviewFlowScreen />} />
+            <Route path="/reviews/:weekKey" element={<ReviewDetailScreen />} />
             <Route path="/todos" element={<TodosScreen />} />
           </Route>
 

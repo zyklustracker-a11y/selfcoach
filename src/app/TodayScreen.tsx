@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
-import { Fab } from '@/components'
+import { Card, Fab } from '@/components'
 import { useBooks } from '@/features/books'
 import { EntryRow, useEntries } from '@/features/entries'
+import { isReviewOpen, isSunday, useReviews } from '@/features/reviews'
 import { TodoItem, useTodos } from '@/features/todos'
 import { t } from '@/lib/strings'
 
@@ -22,6 +23,9 @@ export function TodayScreen() {
   const { activeBook } = useBooks()
   const { today } = useEntries()
   const { today: todosToday } = useTodos()
+  const { current: currentReview } = useReviews()
+  const reviewOpen = isReviewOpen()
+  const reviewDone = currentReview?.completedAt != null
 
   return (
     <div className="px-6.5" style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}>
@@ -63,6 +67,31 @@ export function TodayScreen() {
           </>
         )}
       </div>
+
+      {reviewOpen && (
+        <section className="mt-[30px]">
+          {reviewDone ? (
+            <p className="text-body text-text-muted">{t.reviews.cardDone}</p>
+          ) : (
+            /* The one card allowed next to the FAB (DESIGN.md, colour rules). */
+            <Card className="bg-accent-quiet">
+              <p className="font-mono text-caption uppercase text-accent">
+                {isSunday() ? t.reviews.cardSunday : t.reviews.cardTitle}
+              </p>
+              <p className="mt-1.5 font-serif text-entry text-text-primary">
+                {t.reviews.cardBody(today.length, 5)}
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/reviews/current')}
+                className="mt-2 min-h-touch text-input-sans font-medium text-accent"
+              >
+                {currentReview ? t.reviews.cardResume : t.reviews.cardStart}
+              </button>
+            </Card>
+          )}
+        </section>
+      )}
 
       {todosToday.length > 0 && (
         <section className="mt-[30px] border-t border-border pt-[30px]">
