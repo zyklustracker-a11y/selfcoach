@@ -194,6 +194,9 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 
 ## 8. Phasenplan und Status
 
+Alle Phasen sind gebaut. Laufende Protokolle: `DECISIONS.md` (Begründungen),
+`BLOCKED.md` (was den Nutzer braucht), `TESTPLAN.md` (was nur auf dem Gerät prüfbar ist).
+
 | Phase | Inhalt | Status |
 |---|---|---|
 | 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | **fertig** — `.env.local` fehlt noch |

@@ -9,7 +9,11 @@ interface TodosContextValue {
   todos: TodoWithId[]
   loading: boolean
   error: string | null
-  /** Open dailies due today. */
+  /**
+   * Everything due today, ticked off or not. A task that vanishes the moment it
+   * is checked gives no feedback — and the struck-through state DESIGN.md
+   * describes would never be seen.
+   */
   today: TodoWithId[]
   /** Open dailies from earlier days, waiting for a decision. */
   overdue: TodoWithId[]
@@ -50,12 +54,13 @@ export function TodosProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<TodosContextValue>(() => {
     const key = dayKey()
-    const openDailies = todos.filter((todo) => todo.kind === 'daily' && todo.status === 'open')
+    const dailies = todos.filter((todo) => todo.kind === 'daily')
+    const openDailies = dailies.filter((todo) => todo.status === 'open')
     return {
       todos,
       loading,
       error,
-      today: openDailies.filter((todo) => todo.dueDate === key),
+      today: dailies.filter((todo) => todo.dueDate === key && todo.status !== 'dropped'),
       overdue: openDailies.filter((todo) => todo.dueDate !== null && todo.dueDate < key),
       open: openDailies,
       principles: todos.filter((todo) => todo.kind === 'principle' && todo.status === 'open'),

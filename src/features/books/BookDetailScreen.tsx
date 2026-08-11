@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { BottomSheet, Button, TagChip } from '@/components'
 import { useAuth } from '@/features/auth'
 import { EntryRow, useEntriesForBook } from '@/features/entries'
+import { TodoItem, useTodos } from '@/features/todos'
 import { deleteBook, setActiveBook } from '@/lib/firestore/books'
 import { t } from '@/lib/strings'
 import type { Timestamp } from 'firebase/firestore'
@@ -26,6 +27,8 @@ export function BookDetailScreen() {
   const { user } = useAuth()
   const book = useBook(bookId)
   const entries = useEntriesForBook(bookId)
+  const { todos } = useTodos()
+  const bookTodos = todos.filter((todo) => todo.bookId === bookId)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -94,6 +97,21 @@ export function BookDetailScreen() {
           </ul>
         )}
       </section>
+
+      {bookTodos.length > 0 && (
+        <section className="mt-[30px] border-t border-border pt-[30px]">
+          <h2 className="font-mono text-section uppercase text-text-muted">
+            {t.entries.todosForBook}
+          </h2>
+          <ul className="mt-2">
+            {bookTodos.map((todo) => (
+              <li key={todo.id}>
+                <TodoItem todo={todo} checkable={todo.kind !== 'principle'} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="mt-[30px] space-y-3 border-t border-border pt-[30px]">
         {book.status === 'finished' &&

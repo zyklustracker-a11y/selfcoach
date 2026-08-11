@@ -5,6 +5,7 @@ import { useBooks } from '@/features/books'
 import { EntryRow, FlashbackCard, useEntries } from '@/features/entries'
 import { isReviewOpen, isSunday, useReviews } from '@/features/reviews'
 import { TodoItem, useTodos } from '@/features/todos'
+import { weekStreak } from '@/lib/streak'
 import { t } from '@/lib/strings'
 
 const TODAY = new Intl.DateTimeFormat('de-DE', {
@@ -21,7 +22,8 @@ const TODAY = new Intl.DateTimeFormat('de-DE', {
 export function TodayScreen() {
   const navigate = useNavigate()
   const { activeBook } = useBooks()
-  const { today, dueFlashbacks } = useEntries()
+  const { entries, today, dueFlashbacks } = useEntries()
+  const streak = weekStreak(entries.map((entry) => entry.weekKey))
   const { today: todosToday } = useTodos()
   const { current: currentReview } = useReviews()
   const reviewOpen = isReviewOpen()
@@ -29,7 +31,12 @@ export function TodayScreen() {
 
   return (
     <div className="px-6.5" style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}>
-      <p className="font-mono text-caption uppercase text-text-muted">{TODAY.format(new Date())}</p>
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="font-mono text-caption uppercase text-text-muted">{TODAY.format(new Date())}</p>
+        {streak > 0 && (
+          <p className="font-mono text-caption uppercase text-text-muted">{t.today.streak(streak)}</p>
+        )}
+      </div>
 
       {activeBook && (
         <button

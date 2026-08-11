@@ -221,3 +221,27 @@ ein Rückstand bildet; er wird Tag für Tag abgebaut, älteste zuerst.
 Ein Eintrag mit `dayKey` von heute wird übersprungen, auch wenn `nextReviewAt` fällig wäre
 (passiert nur bei manipulierten Daten). Grund: Sich selbst am selben Tag zu fragen, ob man das
 noch lebt, ist unsinnig.
+
+---
+
+## Abschlussdurchgang (11.08.2026)
+
+### Wochenstreak nachgebaut
+Beim Konzeptabgleich fehlte die Streak-Anzeige aus 6.8. Gewählt: Wochen in Folge mit
+mindestens einem Eintrag, in `text-muted` neben dem Datum. Die laufende Woche zählt erst, wenn
+sie einen Eintrag hat — sonst sähe Montagfrüh jede Serie gerissen aus. Sieben Fälle geprüft.
+Dagegen spricht nichts; ein Tagesstreak wäre der Fehler gewesen, nicht dieser.
+
+### Abgehakte Tagesaufgaben bleiben bis Tagesende stehen
+Ursprünglich verschwand ein To-do sofort aus „Heute". Gewählt: Es bleibt durchgestrichen
+sichtbar. Grund: Ohne Rückmeldung fühlt sich der Klick wie ein Fehler an, und der von
+`DESIGN.md` beschriebene Erledigt-Zustand bekäme man sonst nie zu Gesicht. Dagegen spricht eine
+etwas längere Liste gegen Abend.
+
+### Fehler gefunden: Wochenreview verlor Antworten beim Neuladen
+Der Formularzustand wurde beim Mounten aus `current` gefüllt — das ist beim Kaltstart aber noch
+`null`, weil der Provider lädt. Nach einem Neustart stand das Formular leer da, und der nächste
+Schritt hätte die gespeicherten Antworten mit Leerstrings überschrieben. Behoben: Der Zustand
+wird übernommen, sobald das Review eintrifft, und vorher wird nicht geschrieben.
+**Falsche Annahme meinerseits:** Ich hatte angenommen, der Initialwert eines `useState` sehe
+bereits geladene Daten. Bei asynchronen Providern gilt das nie.

@@ -100,6 +100,7 @@ export const de = {
     page: (n: number) => `S. ${n}`,
     emptyForBook: 'Zu diesem Buch gibt es noch keinen Eintrag.',
     forBook: 'Einträge',
+    todosForBook: 'Daraus geworden',
     writeSummary: 'Fazit schreiben',
     summaryExists: 'Fazit ansehen',
   },
@@ -149,6 +150,8 @@ export const de = {
     entriesToday: 'Heute festgehalten',
     todos: 'Heute vorgenommen',
     newEntry: 'Neuer Eintrag',
+    // A state, in the same size as a date. No praise, no blame (DESIGN.md rule 4).
+    streak: (n: number) => (n === 1 ? '1 Woche in Folge' : `${n} Wochen in Folge`),
   },
   books: {
     title: 'Bücher',

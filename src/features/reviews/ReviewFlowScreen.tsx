@@ -37,14 +37,33 @@ export function ReviewFlowScreen() {
   // A review that already exists must not have its createdAt pushed forward.
   const existedOnMount = useRef(current !== null)
 
-  // Resume where it was left off: the first unanswered question.
-  const [resumed, setResumed] = useState(false)
+  /**
+   * Takes over the stored review once it arrives. The initial state cannot do this:
+   * on a cold start the provider is still loading and `current` is null, so the
+   * form would sit there empty and the next step would write those blanks over
+   * the answers already in Firestore.
+   */
+  const [hydrated, setHydrated] = useState(false)
   useEffect(() => {
-    if (resumed || !current) return
-    const firstEmpty = questions.findIndex((_, index) => !current.answers[index]?.trim())
+    if (hydrated || !current) return
+
+    setAnswers(questions.map((_, index) => current.answers[index] ?? ''))
+    setTopInsightIds(current.topInsightIds)
+
+    // Question 1 is the entry picker and never writes to `answers`, so it counts
+    // as done once something was picked or any later question was answered —
+    // otherwise every resume would drop back to the first step.
+    const firstStepDone =
+      current.topInsightIds.length > 0 || current.answers.some((answer) => answer?.trim())
+    const firstEmpty = questions.findIndex((_, index) =>
+      index === 0 ? !firstStepDone : !current.answers[index]?.trim(),
+    )
     setStep(firstEmpty === -1 ? questions.length - 1 : firstEmpty)
-    setResumed(true)
-  }, [current, questions, resumed])
+    setHydrated(true)
+  }, [current, questions, hydrated])
+
+  // Nothing may be written before the stored review has been taken over.
+  const ready = current === null || hydrated
 
   const draft: ReviewDraft = {
     weekKey: material.weekKey,
@@ -59,7 +78,7 @@ export function ReviewFlowScreen() {
   }
 
   async function persist(completed: boolean) {
-    if (!user) return
+    if (!user || !ready) return
     setSaving(true)
     try {
       await saveReview(user.uid, draft, { completed, isNew: !existedOnMount.current })
@@ -185,7 +204,7 @@ export function ReviewFlowScreen() {
             {t.action.back}
           </Button>
         )}
-        <Button fullWidth disabled={saving} onClick={() => void next()}>
+        <Button fullWidth disabled={saving || !ready} onClick={() => void next()}>
           {isLast ? t.reviews.finish : t.action.next}
         </Button>
       </div>
