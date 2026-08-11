@@ -105,6 +105,11 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
   (Konzept 9).
 - Firebase App Check (Konzept 10, optional) zieht reCAPTCHA als externen Dienst nach sich —
   daher in V1 nicht einbauen.
+- **Service Worker und Auth-Redirect beißen sich.** `authDomain` ist die Auslieferungsdomain
+  (nötig gegen Safaris Tracking-Schutz), also liegt `/__/auth/handler` im Scope des Service
+  Workers. Ohne `navigateFallbackDenylist: [/^\/__\//]` beantwortet der Fallback den
+  Auth-Handler mit der App-Shell und der Login scheitert wortlos. Beim Ändern der
+  Workbox-Konfiguration nie entfernen.
 
 ---
 

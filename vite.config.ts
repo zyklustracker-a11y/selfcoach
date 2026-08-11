@@ -50,6 +50,13 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,woff2}'],
         // Every route is client-side; unknown paths must resolve to the shell.
         navigateFallback: '/index.html',
+        // Except /__/ — Firebase Hosting serves the auth handler and iframe from
+        // there. Because authDomain is this very domain (required so Safari's
+        // tracking prevention does not break signInWithRedirect), those URLs sit
+        // inside the service worker's scope, and the fallback would answer them
+        // with the app shell. Sign-in then returns to a page that cannot complete
+        // it. This denylist is what keeps the redirect reaching the real handler.
+        navigateFallbackDenylist: [/^\/__\//],
         cleanupOutdatedCaches: true,
       },
       devOptions: {
