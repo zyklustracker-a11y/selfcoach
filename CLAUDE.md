@@ -133,6 +133,7 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 | Account-Löschung | nicht atomar — **akzeptiert** | Nutzer, 11.08.2026 |
 | To-do-Screen | Unteransichten Heute / Offen / Vorsätze / Erledigt **innerhalb** des To-do-Tabs | Nutzer, 11.08.2026 |
 | Vorsatzbewertung 0–3 | **gestrichen** | Nutzer, 11.08.2026 |
+| Wiedervorlage-Auslöser | **jeder Eintrag** bekommt `nextReviewAt` (7 → 30 → 90 Tage) | Nutzer, 11.08.2026 |
 
 ### 7.1a Bewusste Abweichungen vom Konzept
 
@@ -151,8 +152,8 @@ Sitzungen **nicht** aus dem Konzept „zurückrepariert" werden.
 | Archivfilter „Wichtigkeit" (6.6) | entfällt mit dem Feld |
 | Leitfrage 6 des Wochenreviews | entfällt — es bleiben fünf Fragen |
 
-**Folge:** Die Wiedervorlage (6.7) hatte „Wichtigkeit ≥ 2" als einzigen Auslöser. Der ist
-weg. Bis der Nutzer einen Ersatz benennt, wird die Wiedervorlage **nicht gebaut**.
+**Folge:** Die Wiedervorlage (6.7) hatte „Wichtigkeit ≥ 2" als einzigen Auslöser. An seine
+Stelle tritt: **jeder Eintrag** bekommt `nextReviewAt`.
 
 ### 7.2 Blockierend
 
@@ -166,7 +167,7 @@ weg. Bis der Nutzer einen Ersatz benennt, wird die Wiedervorlage **nicht gebaut*
 |---|---|---|
 | 6 | `book_summary` erzeugt einen Eintrag, passt aber nicht in die Pflichtkette `learning`/`meaning`/`action` (Konzept 6.2 vs. 9 vs. 10). Wie abbilden? | 3 |
 | 7 | Buch-Feld „persönliche Bewertung 1–5" (Konzept 6.2): fällt das unter „keine Bewertungsskala"? | 3 |
-| 8 | **Wiedervorlage: welcher Auslöser?** „Wichtigkeit ≥ 2" ist gestrichen. Alternativen: jeder Eintrag, oder nur Einträge mit abgeleitetem `principle`-To-do. Oder das Feature ganz streichen. | 4 |
+| 8 | Wiedervorlage: bei „jeder Eintrag" können an einem Tag mehrere Rückblenden fällig sein. Wie viele zeigt der Heute-Screen (Vorschlag: genau eine, älteste zuerst)? | 9 |
 | 9 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
 | 10 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
 | 11 | „Leitfragen bearbeiten" kann nur für die Freitextfragen gelten; Frage 1 (Auswahl aus Wocheneinträgen) hat feste UI. Bestätigen. | 7 |
