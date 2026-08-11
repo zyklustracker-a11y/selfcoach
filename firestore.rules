@@ -97,6 +97,27 @@ service cloud.firestore {
         allow read, delete: if isOwner(userId);
         allow create, update: if isOwner(userId) && isValidTodo(request.resource.data);
       }
+
+      // The document id is the ISO week, so a week can only hold one review.
+      match /reviews/{weekKey} {
+        function isValidReview(d) {
+          return d.weekKey == weekKey
+            && d.weekKey is string
+            && d.weekKey.size() == 8
+            && d.questions is list
+            && d.questions.size() <= 12
+            && d.answers is list
+            && d.answers.size() == d.questions.size()
+            && d.topInsightIds is list
+            && d.topInsightIds.size() <= 20
+            && d.entryCount is int
+            && d.todoDoneCount is int
+            && d.todoTotalCount is int;
+        }
+
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidReview(request.resource.data);
+      }
     }
   }
 }

@@ -95,3 +95,35 @@ vielen Altlasten lang wird.
 `todos.dueDate` ist ein `YYYY-MM-DD`-String wie bei den Einträgen. Grund: Vergleich und
 Gruppierung ohne Zeitzonenlogik, und „heute" ist der lokale Tag des Nutzers. Dagegen spricht,
 dass sich damit keine Uhrzeit ausdrücken lässt — die braucht das Konzept nicht.
+
+---
+
+## Phase 6 — Archiv und Suche (11.08.2026)
+
+### Review speichert seine Fragen mit
+Konzept 9 sieht fünf feste Feldnamen vor (`implemented`, `obstacles`, …). Gewählt:
+`questions[]` und `answers[]` gleicher Länge. Grund: Die Leitfragen sind in den Einstellungen
+editierbar (Konzept 6.5); mit festen Feldern stünde über einer alten Antwort später eine
+andere Frage. Dagegen spricht, dass man nicht mehr gezielt nach „allen Hindernissen" abfragen
+kann — bei einem Nutzer ohne Auswertung kein Verlust.
+
+### Unterbrochenes Review liegt in Firestore, nicht im `localStorage`
+Gewählt: `reviews/{weekKey}` mit `completedAt: null` als Zwischenstand, bei jedem Schritt
+geschrieben. Grund: Die Dokument-ID ist die Woche, also überschreibt jeder Schritt denselben
+Datensatz; der Stand übersteht Speicherräumung und einen Gerätewechsel. Dagegen spricht ein
+Schreibvorgang pro Schritt — bei fünf Fragen pro Woche irrelevant.
+
+### Suchindex hängt an den Einträgen, nicht am Suchbegriff
+Gewählt: Fuse-Index in `useMemo` über `entries`, Suchbegriff zusätzlich über
+`useDeferredValue` entkoppelt. Grund: Der Index darf nicht bei jedem Tastendruck neu entstehen.
+Dagegen spricht nichts; die Alternative wäre ein manuelles Debounce mit eigenem Timer.
+
+### Umsetzungsfilter zählt Einträge ohne To-do als „offen"
+Ein Eintrag ohne abgeleitetes To-do erscheint unter „Nur offene", nicht unter „Nur umgesetzte".
+Grund: Er ist nachweislich nicht umgesetzt worden. Dagegen spricht, dass reine Notizen ohne
+Handlungsabsicht die Liste füllen — die gibt es hier aber nicht, `action` ist Pflicht.
+
+### Zitatansicht zeigt das Zitat, nicht den Eintrag
+Gewählt: In „Zitate" steht das Zitat groß und kursiv mit Buch und Seite darunter, statt der
+üblichen Eintragszeile. Grund: Wer Zitate durchsieht, sucht den Wortlaut. Dagegen spricht ein
+Bruch mit dem sonst einheitlichen Listenbild.

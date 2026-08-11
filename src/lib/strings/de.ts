@@ -199,6 +199,45 @@ export const de = {
     archive: 'Das Archiv kommt in Phase 6.',
     todos: 'Die To-dos kommen in Phase 5.',
   },
+  archive: {
+    count: (n: number) => (n === 1 ? '1 EINTRAG' : `${n} EINTRÄGE`),
+    searchPlaceholder: 'Einträge durchsuchen',
+    view: {
+      chronological: 'Chronologisch',
+      byBook: 'Nach Buch',
+      byTag: 'Nach Tag',
+      quotes: 'Zitate',
+      reviews: 'Reviews',
+    },
+    period: {
+      all: 'Alles',
+      month: '30 Tage',
+      quarter: '3 Monate',
+      year: 'Ein Jahr',
+    },
+    filter: {
+      period: 'Zeitraum',
+      book: 'Buch',
+      tag: 'Tag',
+      implementation: 'Umsetzung',
+      implemented: 'Nur umgesetzte',
+      notImplemented: 'Nur offene',
+    },
+    resetFilters: 'Filter zurücksetzen',
+    withoutTag: 'Ohne Tag',
+    undated: 'Ohne Datum',
+    empty: {
+      entries: 'Hier ist noch nichts. Einträge sammeln sich mit der Zeit an.',
+      search: 'Nichts gefunden.',
+      quotes: 'Noch kein Zitat festgehalten.',
+      reviews: 'Noch kein Wochenreview abgeschlossen.',
+    },
+  },
+  reviews: {
+    weekLabel: (weekKey: string) => `Woche ${weekKey.slice(6)}/${weekKey.slice(0, 4)}`,
+    entryCount: (n: number) => (n === 1 ? '1 Eintrag' : `${n} Einträge`),
+    noFocus: 'Ohne Fokus abgeschlossen.',
+  },
   review: {
     // The five guiding questions from concept 6.5. Question 6 was dropped with the
     // 0-3 rating scale. Seeded into settings.reviewQuestions and editable later.
