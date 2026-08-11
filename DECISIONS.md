@@ -253,3 +253,24 @@ Schritt hätte die gespeicherten Antworten mit Leerstrings überschrieben. Behob
 wird übernommen, sobald das Review eintrifft, und vorher wird nicht geschrieben.
 **Falsche Annahme meinerseits:** Ich hatte angenommen, der Initialwert eines `useState` sehe
 bereits geladene Daten. Bei asynchronen Providern gilt das nie.
+
+---
+
+## Nacharbeit nach dem Abschlussdurchgang (11.08.2026)
+
+### Offene To-dos lassen sich jetzt verwerfen
+Bisher konnte man ein To-do nur abhaken oder — beim Übertrag von gestern — verwerfen. Ein
+Vorsatz war damit unkündbar, und seit Vorsätze die Rückblende dauerhaft am Leben halten, wäre
+das eine Falle gewesen. Gewählt: „Verwerfen" unter jedem offenen Eintrag in den Ansichten
+Offen und Vorsätze. Dagegen spricht eine etwas vollere Liste.
+
+### `stats` und `settings.reviewDay` entfernt
+Beide standen in Kapitel 9 bzw. wurden angelegt, aber nie geschrieben oder gelesen: Der Streak
+wird clientseitig aus den `weekKey`s berechnet, und der Reviewstart ist als Samstag entschieden,
+nicht konfigurierbar. Gewählt: raus aus dem Datenmodell. Grund: Ein Feld, das nie gepflegt
+wird, ist schlimmer als keins — irgendwann glaubt jemand den Nullen. Dagegen spricht, dass eine
+gespeicherte Statistik Reads spart; bei einem Nutzer ist das keine Rechnung.
+
+### `updateTodo` und `deleteTodo` gelöscht
+Ungenutzter Code im Repository. Wer ein To-do loswerden will, verwirft es — der Ursprungsverweis
+bleibt so erhalten, statt die Spur zu tilgen.

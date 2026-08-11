@@ -9,7 +9,7 @@ import type { User } from 'firebase/auth'
 
 import { db } from '@/lib/firebase'
 import { t } from '@/lib/strings'
-import type { UserDocument, UserSettings, UserStats } from '@/types'
+import type { UserDocument, UserSettings } from '@/types'
 
 /** Every Firestore access goes through this module — never from a component. */
 function userRef(uid: string): DocumentReference<UserDocument> {
@@ -19,14 +19,9 @@ function userRef(uid: string): DocumentReference<UserDocument> {
 function defaultSettings(): UserSettings {
   return {
     theme: 'dark',
-    reviewDay: 6, // Saturday — the review opens on the weekend (concept 6.5)
     reviewQuestions: [...t.review.defaultQuestions],
     locale: 'de',
   }
-}
-
-function defaultStats(): UserStats {
-  return { currentStreakWeeks: 0, longestStreakWeeks: 0, totalEntries: 0 }
 }
 
 export async function getUserDocument(uid: string): Promise<UserDocument | null> {
@@ -50,7 +45,6 @@ export async function ensureUserDocument(user: User): Promise<UserDocument | nul
     createdAt: serverTimestamp(),
     onboardedAt: null,
     settings: defaultSettings(),
-    stats: defaultStats(),
   })
 
   // Read back so the caller gets the resolved server timestamp rather than a

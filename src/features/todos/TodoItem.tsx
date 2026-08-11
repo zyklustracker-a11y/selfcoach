@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
-import { Checkbox } from '@/components'
+import { Button, Checkbox } from '@/components'
 import { useAuth } from '@/features/auth'
 import { useEntries } from '@/features/entries'
-import { setTodoDone } from '@/lib/firestore/todos'
+import { dropTodo, setTodoDone } from '@/lib/firestore/todos'
 import { t } from '@/lib/strings'
 import { entryHeadline, type TodoWithId } from '@/types'
 
@@ -14,9 +14,12 @@ import { entryHeadline, type TodoWithId } from '@/types'
 export function TodoItem({
   todo,
   checkable = true,
+  droppable = false,
 }: {
   todo: TodoWithId
   checkable?: boolean
+  /** Lets an open task be let go of — a principle especially must be retirable. */
+  droppable?: boolean
 }) {
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -58,6 +61,17 @@ export function TodoItem({
         <p className="pb-1 font-mono text-caption text-text-muted">
           {t.todos.postponed(todo.postponedCount)}
         </p>
+      )}
+
+      {droppable && todo.status === 'open' && (
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (user) void dropTodo(user.uid, todo.id)
+          }}
+        >
+          {t.todos.drop}
+        </Button>
       )}
     </div>
   )

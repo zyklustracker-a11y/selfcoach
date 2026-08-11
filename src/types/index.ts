@@ -15,4 +15,4 @@ export type {
 } from './entry'
 export type { Review, ReviewWithId } from './review'
 export type { Todo, TodoInput, TodoKind, TodoStatus, TodoWithId } from './todo'
-export type { Theme, UserDocument, UserSettings, UserStats } from './user'
+export type { Theme, UserDocument, UserSettings } from './user'

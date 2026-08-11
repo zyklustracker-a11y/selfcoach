@@ -8,17 +8,9 @@ export type Theme = 'dark' | 'light'
  */
 export interface UserSettings {
   theme: Theme
-  /** ISO weekday the weekly review opens on. 6 = Saturday (concept 6.5). */
-  reviewDay: number
   /** Editable in settings; seeded from the five questions in concept 6.5. */
   reviewQuestions: string[]
   locale: string
-}
-
-export interface UserStats {
-  currentStreakWeeks: number
-  longestStreakWeeks: number
-  totalEntries: number
 }
 
 /** Document at `users/{uid}`. */
@@ -30,5 +22,4 @@ export interface UserDocument {
   /** Null until the one-time onboarding is finished (concept 7.2, screen 2). */
   onboardedAt: Timestamp | null
   settings: UserSettings
-  stats: UserStats
 }

@@ -63,6 +63,7 @@ starten. Der Safari-Tab prüft den Standalone-Modus nicht.
 | 5 | Vorsatz (`principle`) anlegen | Erscheint unter „Vorsätze", nicht unter „Heute" |
 | 6 | Am nächsten Tag öffnen (oder Datum am Gerät vorstellen) | Offenes Tages-To-do von gestern wird zur Entscheidung angeboten |
 | 7 | „Auf heute schieben" bzw. „Verwerfen" | Verschoben bzw. still weg, kein Anhäufen |
+| 8 | Unter „Vorsätze" bei einem Vorsatz „Verwerfen" | Verschwindet aus der Liste; die Rückblende dazu hört auf, dauerhaft wiederzukehren |
 
 ## Phase 6 — Archiv und Suche
 

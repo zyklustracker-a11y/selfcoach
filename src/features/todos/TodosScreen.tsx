@@ -67,7 +67,11 @@ export function TodosScreen() {
             {list.map((todo) => (
               <li key={todo.id}>
                 {/* A principle is never ticked off — it is reviewed (concept 6.4). */}
-                <TodoItem todo={todo} checkable={todo.kind !== 'principle'} />
+                <TodoItem
+                  todo={todo}
+                  checkable={todo.kind !== 'principle'}
+                  droppable={view === 'principles' || view === 'open'}
+                />
               </li>
             ))}
           </ul>

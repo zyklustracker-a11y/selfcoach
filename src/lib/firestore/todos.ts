@@ -1,7 +1,6 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -74,10 +73,3 @@ export async function dropTodo(uid: string, todoId: string): Promise<void> {
   await updateDoc(todoRef(uid, todoId), { status: 'dropped', updatedAt: serverTimestamp() })
 }
 
-export async function updateTodo(uid: string, todoId: string, input: TodoInput): Promise<void> {
-  await updateDoc(todoRef(uid, todoId), { ...input, updatedAt: serverTimestamp() })
-}
-
-export async function deleteTodo(uid: string, todoId: string): Promise<void> {
-  await deleteDoc(todoRef(uid, todoId))
-}
