@@ -110,30 +110,35 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 
 ## 7. Entscheidungen und offene Fragen
 
+**Grundsatz:** Einmal getroffene Entscheidungen gelten. Taucht in einer späteren Nachricht
+etwas auf, das einer Zeile aus 7.1 widerspricht, wird es **nicht** übernommen, sondern
+nachgefragt. Neue Antworten auf offene Fragen aus 7.3 sind davon nicht betroffen.
+
 ### 7.1 Entschieden
 
 | Frage | Antwort | Quelle |
 |---|---|---|
-| Anzahl Leitfragen im Wochenreview | **fünf** (Frage 6 entfällt mit der Bewertungsskala) | Nutzer, 11.08.2026 |
-| Wochenreview zugänglich | ab **Samstag**, Erinnerung Sonntagabend | Konzept 6.5 |
-| Ort der Einstellungen | Icon in der **Kopfzeile**, nicht in der Tab-Bar | Konzept 7.1 |
-| Streak-Art | **Wochenstreak**, kein Tagesstreak | Konzept 6.8 |
-| Push-Erinnerungen | **V2.** In V1 nur `reminderTime` speichern + In-App-Hinweis | Konzept 5/11 |
-| Wichtigkeit am Eintrag | **gestrichen** — keinerlei Bewertungsskalen in der App | Nutzer, 11.08.2026 |
+| Anzahl Leitfragen im Wochenreview | **fünf** | Nutzer, 11.08.2026 |
+| Wochenreview zugänglich | ab **Samstag**, Sonntag wird es beworben | Nutzer, 11.08.2026 |
+| Einstellungen-Zugang | schlichtes **Zahnradsymbol** oben in der Kopfzeile | Nutzer, 11.08.2026 |
+| Streak | **Wochenstreak**; eine Woche zählt bei **mindestens einem Eintrag** | Nutzer, 11.08.2026 |
+| Erinnerungen | **gestrichen**, auch für V2. Kein `reminderTime`, keine Push-Logik | Nutzer, 11.08.2026 |
+| Bewertungsskalen | **keine** — weder am Eintrag noch am Buch noch am Vorsatz | Nutzer, 11.08.2026 |
+| Wiedervorlage-Auslöser | **jeder Eintrag** bekommt `nextReviewAt` (7 → 30 → 90 Tage) | Nutzer, 11.08.2026 |
+| Seitenzählung | nur die **Seite am Eintrag**; kein Buchfortschritt, kein Balken, keine Prozente | Nutzer, 11.08.2026 |
 | Sprache | UI Deutsch, für Englisch vorbereitet | Nutzer |
 | Heute-Screen | Richtung **1a „Die Seite"** | `DESIGN.md` |
-| App-Name | **ReadCoach** (ersetzt den Platzhalter „ReadFlect") | Nutzer, 11.08.2026 |
+| App-Name | **ReadCoach** | Nutzer, 11.08.2026 |
 | Schriften | **`@fontsource`**, selbst gehostet — kein Google-Fonts-CDN | Nutzer, 11.08.2026 |
 | Tailwind | **Version 3** (`theme.extend`, JS-Konfiguration) | Nutzer, 11.08.2026 |
-| Firestore-Region | **`eur3`** (Europa, multiregional) — unumkehrbar | Nutzer, 11.08.2026 |
-| Erinnerungen | **gestrichen**, auch für V2. Kein `reminderTime`, keine Push-Logik | Nutzer, 11.08.2026 |
-| Einstellungen-Zugang | schlichtes **Zahnradsymbol** oben in der Kopfzeile | Nutzer, 11.08.2026 |
-| Streak | eine Woche zählt bei **mindestens einem Eintrag** | Nutzer, 11.08.2026 |
-| Seitenzählung | nur die **Seite am Eintrag**; kein Buchfortschritt, kein Balken, keine Prozente | Nutzer, 11.08.2026 |
+| Hosting | **Firebase Hosting**; `authDomain` = Auslieferungsdomain | Nutzer, 11.08.2026 |
+| Firestore-Region | **`eur3`** — unumkehrbar, ist gesetzt | Nutzer, 11.08.2026 |
 | Account-Löschung | nicht atomar — **akzeptiert** | Nutzer, 11.08.2026 |
 | To-do-Screen | Unteransichten Heute / Offen / Vorsätze / Erledigt **innerhalb** des To-do-Tabs | Nutzer, 11.08.2026 |
-| Vorsatzbewertung 0–3 | **gestrichen** | Nutzer, 11.08.2026 |
-| Wiedervorlage-Auslöser | **jeder Eintrag** bekommt `nextReviewAt` (7 → 30 → 90 Tage) | Nutzer, 11.08.2026 |
+| `book_summary` | **keine** Pflichtkette. `Entry` ist eine diskriminierte Union über `type` | Nutzer, 11.08.2026 |
+| Buchfazit | `books.summary` entfällt, stattdessen `books.summaryEntryId` als Referenz | Nutzer, 11.08.2026 |
+| Firestore Rules | validieren die Pflichtfelder **typabhängig** | Nutzer, 11.08.2026 |
+| `/styleguide` ohne `.env.local` | **kein Bug.** Entwicklungswerkzeug, wird nicht repariert | Nutzer, 11.08.2026 |
 
 ### 7.1a Bewusste Abweichungen vom Konzept
 
@@ -144,36 +149,42 @@ Sitzungen **nicht** aus dem Konzept „zurückrepariert" werden.
 |---|---|
 | `settings.reminderTime` | entfällt — keine Erinnerungen |
 | `books.totalPages`, `books.currentPage` | entfallen — kein Fortschritt am Buch |
-| `entries.pageFrom` / `pageTo` | ein einzelnes Feld `page?` |
-| `todos.principleScores[]`, `reviews.principleRatings[]` | entfallen — keine 0–3-Skala |
-| V2-Feature S2 „Push-Erinnerungen" | ersatzlos gestrichen |
-| Heute-Screen „Fortschrittsbalken" (6.8) | entfällt mit der Seitenzählung |
+| `books.summary` (Text) | `books.summaryEntryId` (Referenz auf den Fazit-Eintrag) |
+| `books.rating` (1–5) | entfällt — keine Bewertungsskalen |
 | `entries.importance` (1–3) | entfällt — keine Bewertungsskalen |
-| Archivfilter „Wichtigkeit" (6.6) | entfällt mit dem Feld |
+| `entries.pageFrom` / `pageTo` | ein einzelnes Feld `page?` |
+| Einheitliches `entries`-Schema | **diskriminierte Union über `type`** (siehe unten) |
+| `todos.principleScores[]`, `reviews.principleRatings[]` | entfallen — keine 0–3-Skala |
 | Leitfrage 6 des Wochenreviews | entfällt — es bleiben fünf Fragen |
+| Archivfilter „Wichtigkeit" (6.6) | entfällt mit dem Feld |
+| Heute-Screen „Fortschrittsbalken" (6.8) | entfällt mit der Seitenzählung |
+| V2-Feature S2 „Push-Erinnerungen" | ersatzlos gestrichen |
 
 **Folge:** Die Wiedervorlage (6.7) hatte „Wichtigkeit ≥ 2" als einzigen Auslöser. An seine
 Stelle tritt: **jeder Eintrag** bekommt `nextReviewAt`.
 
+**Pflichtfelder je Eintragstyp** — so auch in den Firestore Rules zu validieren:
+
+| `type` | Pflicht | Optional |
+|---|---|---|
+| `insight` | `learning`, `meaning`, `action` | alles Übrige |
+| `book_summary` | `summary` („die drei Dinge, die bleiben") | `meaning`, `action` |
+
+Begründung des Nutzers: Die Handlungen aus einem Buch sind bereits während des Lesens als
+eigene Einträge entstanden. Das Fazit ist der Rückblick darauf, keine neue Handlungsableitung.
+
 ### 7.2 Blockierend
 
-1. **Firebase-Werte** für `.env.local`: `apiKey`, `authDomain`, `projectId`, `storageBucket`,
-   `messagingSenderId`, `appId`. Ohne sie startet die App nicht gegen ein echtes Projekt.
-   Das Firebase-Projekt muss mit Firestore in Region **`eur3`** angelegt werden.
+Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 
 ### 7.3 Später zu klären — jeweils vor der genannten Phase
 
 | # | Frage | Phase |
 |---|---|---|
-| 6 | `book_summary` erzeugt einen Eintrag, passt aber nicht in die Pflichtkette `learning`/`meaning`/`action` (Konzept 6.2 vs. 9 vs. 10). Wie abbilden? | 3 |
-| 7 | Buch-Feld „persönliche Bewertung 1–5" (Konzept 6.2): fällt das unter „keine Bewertungsskala"? | 3 |
-| 8 | Wiedervorlage: bei „jeder Eintrag" können an einem Tag mehrere Rückblenden fällig sein. Wie viele zeigt der Heute-Screen (Vorschlag: genau eine, älteste zuerst)? | 9 |
-| 9 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
-| 10 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
-| 11 | „Leitfragen bearbeiten" kann nur für die Freitextfragen gelten; Frage 1 (Auswahl aus Wocheneinträgen) hat feste UI. Bestätigen. | 7 |
-| 12 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
-
----
+| 1 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
+| 2 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
+| 3 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
+| 4 | Bei mehreren fälligen Rückblenden an einem Tag: wie viele zeigt der Heute-Screen (Vorschlag: genau eine, älteste zuerst)? | 9 |
 
 ## 8. Phasenplan und Status
 
@@ -182,7 +193,7 @@ Stelle tritt: **jeder Eintrag** bekommt `nextReviewAt`.
 | 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | **fertig** — `.env.local` fehlt noch |
 | 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | **fertig** |
 | 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — Login nur auf dem Gerät prüfbar |
-| 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | offen |
+| 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | **fertig** — Rules müssen noch deployt werden |
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | offen |
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | offen |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | offen |
@@ -202,3 +213,13 @@ muss **die Domain sein, von der ausgeliefert wird** (`readcoach-29227.web.app`),
 
 Icons und Startbilder werden aus `scripts/generate-app-icons.mjs` erzeugt (`npm run icons`),
 nicht von Hand gepflegt. Nach einer Farbänderung in `DESIGN.md` neu laufen lassen.
+
+**Deploys:** `npm run deploy` (Hosting), `npm run deploy:rules` (Firestore Rules). Nach jeder
+Änderung an `firestore.rules` muss deployt werden, sonst gilt weiter die alte Fassung.
+
+**Lokal testen gegen die Emulatoren:**
+`VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-readcoach npm run build`, dazu
+`npx firebase-tools emulators:start --only auth,firestore --project demo-readcoach`.
+Der Zweig in `src/lib/firebase.ts` samt `window.__devSignIn` wird in einem normalen Build
+wegoptimiert — nachgeprüft, er steht nicht im ausgelieferten Bundle. Der Google-Login selbst
+lässt sich so nicht testen: `getRedirectResult` braucht `apis.google.com`.

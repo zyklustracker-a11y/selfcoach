@@ -2,10 +2,12 @@ import { initializeApp, type FirebaseOptions } from 'firebase/app'
 import {
   browserLocalPersistence,
   browserPopupRedirectResolver,
+  connectAuthEmulator,
   initializeAuth,
   type Auth,
 } from 'firebase/auth'
 import {
+  connectFirestoreEmulator,
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
@@ -62,3 +64,23 @@ export const auth: Auth = initializeAuth(firebaseApp, {
   persistence: browserLocalPersistence,
   popupRedirectResolver: browserPopupRedirectResolver,
 })
+
+// Development only: `VITE_USE_EMULATORS=true npm run build` points the app at the
+// local Firebase emulators so the redirect sign-in and the security rules can be
+// exercised without touching the real project. Never set in a deployed build.
+if (import.meta.env.VITE_USE_EMULATORS === 'true') {
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true })
+  connectFirestoreEmulator(db, '127.0.0.1', 8080)
+
+  // Sign-in shortcut for automated tests. The Google redirect cannot run in a
+  // sandbox without network access to apis.google.com, and the screens behind the
+  // guard still need to be exercised. Constant-folded away in a normal build.
+  Object.assign(window, {
+    __devSignIn: (email: string, password: string) =>
+      import('firebase/auth').then((firebaseAuth) =>
+        firebaseAuth
+          .signInWithEmailAndPassword(auth, email, password)
+          .catch(() => firebaseAuth.createUserWithEmailAndPassword(auth, email, password)),
+      ),
+  })
+}
