@@ -219,6 +219,14 @@ muss **die Domain sein, von der ausgeliefert wird** (`readcoach-29227.web.app`),
 Icons und Startbilder werden aus `scripts/generate-app-icons.mjs` erzeugt (`npm run icons`),
 nicht von Hand gepflegt. Nach einer Farbänderung in `DESIGN.md` neu laufen lassen.
 
+**Einmalige Einrichtung in der Google-Cloud-Konsole:** Weil `authDomain` die
+Auslieferungsdomain ist, muss der automatisch angelegte OAuth-Client
+`https://readcoach-29227.web.app/__/auth/handler` als autorisierte Weiterleitungs-URI und
+`https://readcoach-29227.web.app` als JavaScript-Quelle führen. Firebase trägt dort nur die
+`*.firebaseapp.com`-Variante ein; ohne den Zusatz antwortet Google mit
+`redirect_uri_mismatch`. Die Liste „Autorisierte Domains" in Firebase ist eine **andere**
+Liste und reicht dafür nicht. Bei einem Domainwechsel erneut nachtragen.
+
 **Deploys:** `npm run deploy` (Hosting), `npm run deploy:rules` (Firestore Rules). Nach jeder
 Änderung an `firestore.rules` muss deployt werden, sonst gilt weiter die alte Fassung.
 
