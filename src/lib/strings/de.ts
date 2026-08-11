@@ -29,6 +29,10 @@ export const de = {
     add: 'Hinzufügen',
     remove: 'Entfernen',
   },
+  configError: {
+    title: 'Konfiguration unvollständig',
+    body: 'Die App kann ohne gültige Firebase-Zugangsdaten nicht starten. Prüfe `.env.local` und baue neu.',
+  },
   auth: {
     claim: 'Aus gelesenen Seiten gelebte Veränderung.',
     intro:

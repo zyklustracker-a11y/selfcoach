@@ -25,6 +25,15 @@ function required(name: keyof ImportMetaEnv): string {
       `Missing ${name}. Copy .env.local.example to .env.local and fill in the Firebase config.`,
     )
   }
+  // A value copied out of a masked field keeps its bullet characters and still
+  // looks plausible — right length, right prefix. Firebase then rejects it with
+  // an error that points nowhere near the real cause, so catch it here instead.
+  if (!/^[\x21-\x7e]+$/.test(value)) {
+    throw new Error(
+      `${name} contains characters that cannot occur in a Firebase config value. ` +
+        'It was probably copied from a masked display — copy it again from the console.',
+    )
+  }
   return value
 }
 
