@@ -198,7 +198,15 @@ Dagegen spricht, dass die nächste Login-Störung wieder schwerer zu diagnostizi
 
 ## Phase 9 — Wiedervorlage (11.08.2026)
 
-### Nach 90 Tagen ist Schluss
+### Nach 90 Tagen ist Schluss — außer bei laufenden Vorsätzen (Nachtrag 11.08.2026)
+Auf Wunsch des Nutzers kehren Einträge, aus denen ein **offener `principle`-To-do** entstanden
+ist, nach der Leiter dauerhaft im 90-Tage-Rhythmus wieder. Alle anderen verstummen weiterhin.
+Grund gegen „alles kehrt ewig wieder": Es wird genau eine Rückblende pro Tag gezeigt. Bei 500
+Einträgen im Quartalsrhythmus wären rund fünf pro Tag fällig — der Rückstand wüchse unbegrenzt.
+Laufende Vorsätze sind wenige, damit drainiert die Warteschlange. Wer einen davon loswerden
+will, beantwortet ihn einmal mit „Nicht mehr relevant" oder hakt den Vorsatz ab.
+
+### Ursprünglich: nach 90 Tagen ist Schluss
 Konzept 6.7 nennt 7, 30 und 90 Tage, sagt aber nicht, was danach kommt. Gewählt: Nach der
 dritten Rückblende wird `nextReviewAt` auf `null` gesetzt, der Eintrag meldet sich nicht mehr
 von selbst. Grund: Wer einen Vorsatz über ein Jahr dreimal bestätigt hat, braucht die Frage

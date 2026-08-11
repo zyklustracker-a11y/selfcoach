@@ -111,3 +111,5 @@ starten. Der Safari-Tab prüft den Standalone-Modus nicht.
 | 4 | „Nicht mehr relevant" | Karte weg, `nextReviewAt` ist `null`, kommt nicht wieder |
 | 5 | Mehrere gleichzeitig fällig | Nur **eine** Karte, die älteste zuerst |
 | 6 | Nach jeder Antwort in Firestore schauen | `reviewHistory` hat einen neuen Eintrag mit Datum und Antwort |
+| 7 | Eintrag mit laufendem Vorsatz dreimal mit „Ja, läuft" beantworten | `nextReviewAt` steht danach **weiter** 90 Tage in der Zukunft |
+| 8 | Eintrag ohne Vorsatz dreimal mit „Ja, läuft" beantworten | `nextReviewAt` ist danach `null` — er verstummt |

@@ -134,7 +134,9 @@ export async function deleteEntry(uid: string, entryId: string): Promise<void> {
 /**
  * Records how a flashback was answered and schedules the next one (concept 6.7).
  *
- * - `still_true` moves one rung up the ladder: 7 → 30 → 90, then it rests.
+ * - `still_true` moves one rung up the ladder: 7 → 30 → 90. After that it rests,
+ *   unless a standing principle came out of the entry — those keep their quarterly
+ *   rhythm for good.
  * - `again` restarts at 7 days, because taking it on afresh means starting over.
  * - `obsolete` clears the date; the entry stays in the archive but stops asking.
  */
@@ -142,6 +144,8 @@ export async function answerFlashback(
   uid: string,
   entry: EntryWithId,
   answer: FlashbackAnswer,
+  /** True when a standing principle came out of this entry — then it never stops. */
+  keepsRecurring = false,
 ): Promise<void> {
   const now = new Date()
   const seen = entry.reviewCount ?? 0
@@ -149,7 +153,7 @@ export async function answerFlashback(
   let next: Timestamp | null = null
   let count = seen
   if (answer === 'still_true') {
-    const days = nextReviewInterval(seen + 1)
+    const days = nextReviewInterval(seen + 1, keepsRecurring)
     next = days === null ? null : Timestamp.fromDate(addDays(now, days))
     count = seen + 1
   } else if (answer === 'again') {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Card } from '@/components'
 import { useAuth } from '@/features/auth'
+import { useTodos } from '@/features/todos'
 import { answerFlashback } from '@/lib/firestore/entries'
 import { t } from '@/lib/strings'
 import { entryHeadline, type EntryWithId, type FlashbackAnswer } from '@/types'
@@ -23,6 +24,13 @@ export function FlashbackCard({ entry }: { entry: EntryWithId }) {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
+  const { todos } = useTodos()
+
+  // An entry that became a standing principle keeps coming back after the ladder.
+  const keepsRecurring = todos.some(
+    (todo) =>
+      todo.sourceEntryId === entry.id && todo.kind === 'principle' && todo.status === 'open',
+  )
 
   const created = entry.createdAt?.toDate()
   const days = created
@@ -60,7 +68,7 @@ export function FlashbackCard({ entry }: { entry: EntryWithId }) {
             onClick={() => {
               if (!user) return
               setBusy(true)
-              void answerFlashback(user.uid, entry, option.answer)
+              void answerFlashback(user.uid, entry, option.answer, keepsRecurring)
             }}
             className="min-h-touch border-t border-border text-left text-input-sans text-text-secondary active:text-text-primary disabled:opacity-45"
           >

@@ -28,15 +28,22 @@ export function weekKey(date: Date = new Date()): string {
 }
 
 /**
- * 7 → 30 → 90 days (concept 6.7). After the last step an entry stops coming back
- * on its own; three passes over a year are enough to know whether it stuck.
+ * 7 → 30 → 90 days (concept 6.7).
+ *
+ * What happens after the last rung depends on the entry. One that turned into a
+ * standing principle keeps returning every 90 days — that is the whole point of a
+ * principle. Everything else falls silent, because the queue has to drain: only
+ * one flashback is shown per day, so a library of entries all repeating quarterly
+ * would build a backlog that never clears.
  */
 export const REVIEW_INTERVALS = [7, 30, 90] as const
 export const FIRST_REVIEW_DAYS = REVIEW_INTERVALS[0]
 
-/** Days until the next flashback, or null when the ladder is used up. */
-export function nextReviewInterval(reviewCount: number): number | null {
-  return REVIEW_INTERVALS[reviewCount] ?? null
+/** Days until the next flashback, or null when the entry should fall silent. */
+export function nextReviewInterval(reviewCount: number, keepsRecurring = false): number | null {
+  const step = REVIEW_INTERVALS[reviewCount]
+  if (step !== undefined) return step
+  return keepsRecurring ? REVIEW_INTERVALS[REVIEW_INTERVALS.length - 1] : null
 }
 
 export function addDays(date: Date, days: number): Date {
