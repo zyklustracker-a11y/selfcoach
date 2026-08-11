@@ -1,0 +1,54 @@
+@import './fonts.css';
+@import './theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg-base font-sans text-body text-text-primary;
+    /* The shell must not rubber-band; individual scroll areas opt back in. */
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Safari otherwise flashes a grey box on every tap. */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Keep the focus ring visible for keyboard users only. Components that need a
+     ring on pointer interaction ask for `.focus-ring` explicitly. */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+}
+
+@layer components {
+  .focus-ring {
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Scroll containers inside the shell. Momentum scrolling stays on, the bounce
+     at the edges does not. */
+  .scroll-area {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* DESIGN.md section 4: a gradient, not a shadow, separates scrolling content
+     from a fixed bottom bar. */
+  .fade-to-base {
+    background: linear-gradient(to top, var(--bg-base) 68%, transparent);
+  }
+}

@@ -1,0 +1,51 @@
+/*
+ * Colour tokens from DESIGN.md section 1.
+ * Dark is the default and lives on :root. Light is the exception and is applied
+ * by putting the `light` class on <html> — see src/app/theme.ts.
+ */
+
+:root {
+  --bg-base: #16130f;
+  --bg-elevated: #1d1a16;
+  --bg-hover: #221d18;
+  --text-primary: #f2ede7;
+  --text-secondary: #cfc6bc;
+  --text-muted: #9a9189;
+  --accent: #c97b4a;
+  --accent-contrast: #17120e;
+  --accent-quiet: #241c15;
+  --border: #262119;
+  --border-strong: #3a342d;
+  --success: #8fa97a;
+  --danger: #c4655a;
+  --overlay: rgba(10, 8, 6, 0.72);
+
+  /* Pressed state of the accent surface (DESIGN.md section 5, button/FAB). */
+  --accent-pressed: #b76c3e;
+  /* Focus ring: 2px in the surrounding surface colour, then 4px accent halo. */
+  --focus-ring: 0 0 0 2px #16130f, 0 0 0 4px rgba(201, 123, 74, 0.55);
+
+  color-scheme: dark;
+}
+
+:root.light {
+  --bg-base: #f7f3ed;
+  --bg-elevated: #ffffff;
+  --bg-hover: #efe9e0;
+  --text-primary: #1a1714;
+  --text-secondary: #423c35;
+  --text-muted: #6b635b;
+  --accent: #a2542a;
+  --accent-contrast: #fff8f1;
+  --accent-quiet: #f5e7da;
+  --border: #e3dcd1;
+  --border-strong: #c6bcae;
+  --success: #3f6b33;
+  --danger: #a33b32;
+  --overlay: rgba(10, 8, 6, 0.72);
+
+  --accent-pressed: #8e4823;
+  --focus-ring: 0 0 0 2px #f7f3ed, 0 0 0 4px rgba(162, 84, 42, 0.45);
+
+  color-scheme: light;
+}

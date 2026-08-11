@@ -114,42 +114,63 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 
 | Frage | Antwort | Quelle |
 |---|---|---|
-| Anzahl Leitfragen im Wochenreview | **sechs** (Mockup „Frage 5 von 7" ist überholt) | Nutzer, 11.08.2026 |
+| Anzahl Leitfragen im Wochenreview | **fünf** (Frage 6 entfällt mit der Bewertungsskala) | Nutzer, 11.08.2026 |
 | Wochenreview zugänglich | ab **Samstag**, Erinnerung Sonntagabend | Konzept 6.5 |
 | Ort der Einstellungen | Icon in der **Kopfzeile**, nicht in der Tab-Bar | Konzept 7.1 |
 | Streak-Art | **Wochenstreak**, kein Tagesstreak | Konzept 6.8 |
 | Push-Erinnerungen | **V2.** In V1 nur `reminderTime` speichern + In-App-Hinweis | Konzept 5/11 |
-| Wichtigkeitsskala | **1–3**, Wiedervorlage ab ≥ 2 | Konzept 6.3/6.7 |
+| Wichtigkeit am Eintrag | **gestrichen** — keinerlei Bewertungsskalen in der App | Nutzer, 11.08.2026 |
 | Sprache | UI Deutsch, für Englisch vorbereitet | Nutzer |
 | Heute-Screen | Richtung **1a „Die Seite"** | `DESIGN.md` |
+| App-Name | **ReadCoach** (ersetzt den Platzhalter „ReadFlect") | Nutzer, 11.08.2026 |
+| Schriften | **`@fontsource`**, selbst gehostet — kein Google-Fonts-CDN | Nutzer, 11.08.2026 |
+| Tailwind | **Version 3** (`theme.extend`, JS-Konfiguration) | Nutzer, 11.08.2026 |
+| Firestore-Region | **`eur3`** (Europa, multiregional) — unumkehrbar | Nutzer, 11.08.2026 |
+| Erinnerungen | **gestrichen**, auch für V2. Kein `reminderTime`, keine Push-Logik | Nutzer, 11.08.2026 |
+| Einstellungen-Zugang | schlichtes **Zahnradsymbol** oben in der Kopfzeile | Nutzer, 11.08.2026 |
+| Streak | eine Woche zählt bei **mindestens einem Eintrag** | Nutzer, 11.08.2026 |
+| Seitenzählung | nur die **Seite am Eintrag**; kein Buchfortschritt, kein Balken, keine Prozente | Nutzer, 11.08.2026 |
+| Account-Löschung | nicht atomar — **akzeptiert** | Nutzer, 11.08.2026 |
+| To-do-Screen | Unteransichten Heute / Offen / Vorsätze / Erledigt **innerhalb** des To-do-Tabs | Nutzer, 11.08.2026 |
+| Vorsatzbewertung 0–3 | **gestrichen** | Nutzer, 11.08.2026 |
 
-### 7.2 Blockierend — vor Phase 0 zu klären
+### 7.1a Bewusste Abweichungen vom Konzept
 
-1. **App-Name.** „ReadFlect" ist laut Konzept 14.3 ein Platzhalter. Bestimmt Manifest,
-   `<title>`, `package.json` und Startbildschirm-Label.
-2. **Firebase-Werte** für `.env.local`: `apiKey`, `authDomain`, `projectId`, `storageBucket`,
-   `messagingSenderId`, `appId`.
-3. **Firestore-Region** muss beim Anlegen auf `eur3` oder `europe-west3` stehen.
-   **Später nicht mehr änderbar** (Konzept 12).
-4. **Schriften.** `DESIGN.md` bindet Google Fonts ein, § 2 dieser Datei verbietet externe
-   Dienste. Vorschlag: `@fontsource` (identische Schriften, selbst gehostet, offline).
-5. **Tailwind-Version.** `DESIGN.md` schreibt `theme.extend.colors` → Tailwind 3.
+Diese Punkte weichen von Kapitel 9 ab. Sie sind vom Nutzer beauftragt und dürfen in späteren
+Sitzungen **nicht** aus dem Konzept „zurückrepariert" werden.
+
+| Konzept | Gilt stattdessen |
+|---|---|
+| `settings.reminderTime` | entfällt — keine Erinnerungen |
+| `books.totalPages`, `books.currentPage` | entfallen — kein Fortschritt am Buch |
+| `entries.pageFrom` / `pageTo` | ein einzelnes Feld `page?` |
+| `todos.principleScores[]`, `reviews.principleRatings[]` | entfallen — keine 0–3-Skala |
+| V2-Feature S2 „Push-Erinnerungen" | ersatzlos gestrichen |
+| Heute-Screen „Fortschrittsbalken" (6.8) | entfällt mit der Seitenzählung |
+| `entries.importance` (1–3) | entfällt — keine Bewertungsskalen |
+| Archivfilter „Wichtigkeit" (6.6) | entfällt mit dem Feld |
+| Leitfrage 6 des Wochenreviews | entfällt — es bleiben fünf Fragen |
+
+**Folge:** Die Wiedervorlage (6.7) hatte „Wichtigkeit ≥ 2" als einzigen Auslöser. Der ist
+weg. Bis der Nutzer einen Ersatz benennt, wird die Wiedervorlage **nicht gebaut**.
+
+### 7.2 Blockierend
+
+1. **Firebase-Werte** für `.env.local`: `apiKey`, `authDomain`, `projectId`, `storageBucket`,
+   `messagingSenderId`, `appId`. Ohne sie startet die App nicht gegen ein echtes Projekt.
+   Das Firebase-Projekt muss mit Firestore in Region **`eur3`** angelegt werden.
 
 ### 7.3 Später zu klären — jeweils vor der genannten Phase
 
 | # | Frage | Phase |
 |---|---|---|
 | 6 | `book_summary` erzeugt einen Eintrag, passt aber nicht in die Pflichtkette `learning`/`meaning`/`action` (Konzept 6.2 vs. 9 vs. 10). Wie abbilden? | 3 |
-| 7 | `currentPage` des Buchs: manuell pflegen oder automatisch aus `pageTo` des letzten Eintrags? | 3 |
-| 8 | Seitenangabe im Eintragsformular: ein Feld oder `pageFrom`/`pageTo` als Bereich? | 4 |
-| 9 | Wiedervorlage schon in V1 statt V2? Konzept 6.7/15.3 empfiehlt es dringend, das Heute-Mockup zeigt sie bereits. | 4 |
-| 10 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
-| 11 | Streak: was zählt als erfüllte Woche (≥ 1 Eintrag? abgeschlossenes Review?) | 5 |
-| 12 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
-| 13 | „Leitfragen bearbeiten" kann nur für die Freitextfragen 2–5 gelten; Frage 1 (Auswahl) und 6 (Skala) haben feste UI. Bestätigen. | 7 |
-| 14 | Bedeutung der Stufen 0–3 bei der Vorsatzbewertung. | 7 |
-| 15 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
-| 16 | Fortschritt des aktiven Buchs: Konzept 6.8 sagt „Fortschrittsbalken", Richtung 1a zeigt eine Mono-Zeile. | 8 |
+| 7 | Buch-Feld „persönliche Bewertung 1–5" (Konzept 6.2): fällt das unter „keine Bewertungsskala"? | 3 |
+| 8 | **Wiedervorlage: welcher Auslöser?** „Wichtigkeit ≥ 2" ist gestrichen. Alternativen: jeder Eintrag, oder nur Einträge mit abgeleitetem `principle`-To-do. Oder das Feature ganz streichen. | 4 |
+| 9 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
+| 10 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
+| 11 | „Leitfragen bearbeiten" kann nur für die Freitextfragen gelten; Frage 1 (Auswahl aus Wocheneinträgen) hat feste UI. Bestätigen. | 7 |
+| 12 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
 
 ---
 
@@ -157,8 +178,8 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 
 | Phase | Inhalt | Status |
 |---|---|---|
-| 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | offen |
-| 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | offen |
+| 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | **fertig** — `.env.local` fehlt noch |
+| 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | **fertig** |
 | 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | offen |
 | 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | offen |
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | offen |
@@ -170,3 +191,9 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 
 `/styleguide` aus Phase 1 ist eine **temporäre Route** und wird vor dem Deployment
 in Phase 8 zur Entscheidung gestellt.
+
+`src/lib/firebase.ts` ist geschrieben, wird aber noch nirgends importiert — so läuft der
+Styleguide ohne Zugangsdaten. Verdrahtet wird Firebase in Phase 2.
+
+Icons und Startbilder werden aus `scripts/generate-app-icons.mjs` erzeugt (`npm run icons`),
+nicht von Hand gepflegt. Nach einer Farbänderung in `DESIGN.md` neu laufen lassen.
