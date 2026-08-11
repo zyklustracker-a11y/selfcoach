@@ -10,7 +10,7 @@ import { useAuth } from './useAuth'
  * (DESIGN.md, prose rule 5) — the button is the only thing in the accent colour.
  */
 export function LoginScreen() {
-  const { status, error, signIn } = useAuth()
+  const { status, error, errorDetail, signIn } = useAuth()
 
   if (status === 'authenticated') return <Navigate to="/" replace />
 
@@ -31,7 +31,16 @@ export function LoginScreen() {
       </div>
 
       <div>
-        {error && <p className="mb-3.5 text-field-error text-danger">{error}</p>}
+        {error && (
+          <div className="mb-3.5">
+            <p className="text-field-error text-danger">{error}</p>
+            {/* Diagnostic line. Sign-in can only be reproduced on the phone, where
+                there is no console — so the cause has to be readable on screen. */}
+            {errorDetail && (
+              <p className="mt-1 font-mono text-caption text-text-muted">{errorDetail}</p>
+            )}
+          </div>
+        )}
 
         <Button fullWidth onClick={() => void signIn()} disabled={busy}>
           {t.auth.signIn}

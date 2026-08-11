@@ -21,8 +21,38 @@ export interface AuthContextValue {
   user: User | null
   profile: UserDocument | null
   error: string | null
+  /**
+   * Technical detail behind `error`: where it happened and the Firebase code.
+   * Shown on the login screen because sign-in can only be reproduced on a phone,
+   * where there is no console to read. Remove with the polish phase.
+   */
+  errorDetail: string | null
   signIn: () => Promise<void>
   signOutUser: () => Promise<void>
+}
+
+function codeOf(cause: unknown): string {
+  if (cause instanceof FirebaseError) return cause.code
+  if (cause instanceof Error) return cause.name
+  return 'unbekannt'
+}
+
+/** A controlling service worker is a prime suspect whenever the redirect misbehaves. */
+function serviceWorkerState(): string {
+  if (!('serviceWorker' in navigator)) return 'sw:keiner'
+  return navigator.serviceWorker.controller ? 'sw:aktiv' : 'sw:inaktiv'
+}
+
+/**
+ * True when a redirect was started but never completed. Must be read before
+ * getRedirectResult runs, because that call clears the marker.
+ */
+function hasPendingRedirect(): boolean {
+  try {
+    return Object.keys(sessionStorage).some((key) => key.startsWith('firebase:pendingRedirect:'))
+  } catch {
+    return false
+  }
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)
@@ -51,17 +81,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<UserDocument | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [errorDetail, setErrorDetail] = useState<string | null>(null)
 
   useEffect(() => {
     let active = true
+    const wasRedirecting = hasPendingRedirect()
 
     // Must run before we conclude anything about the session: after returning from
     // the Google redirect this is what completes the sign-in. Skipping it would
     // flash the login screen at a user who just signed in.
-    const redirectSettled = getRedirectResult(auth).catch((cause: unknown) => {
-      if (active) setError(describe(cause))
-      return null
-    })
+    const redirectSettled = getRedirectResult(auth)
+      .then((result) => {
+        // Came back from Google with nothing to show for it — the redirect was
+        // interrupted rather than rejected.
+        if (!result && wasRedirecting && active) {
+          setError(t.auth.error.generic)
+          setErrorDetail(`redirect · ohne Ergebnis · ${serviceWorkerState()}`)
+        }
+        return result
+      })
+      .catch((cause: unknown) => {
+        if (active) {
+          setError(describe(cause))
+          setErrorDetail(`redirect · ${codeOf(cause)} · ${serviceWorkerState()}`)
+        }
+        return null
+      })
 
     const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
       void (async () => {
@@ -98,6 +143,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async () => {
     setError(null)
+    setErrorDetail(null)
     setStatus('signingIn')
     const provider = new GoogleAuthProvider()
     try {
@@ -105,18 +151,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await signInWithRedirect(auth, provider)
     } catch (cause: unknown) {
       setError(describe(cause))
+      setErrorDetail(`start · ${codeOf(cause)} · ${serviceWorkerState()}`)
       setStatus('unauthenticated')
     }
   }, [])
 
   const signOutUser = useCallback(async () => {
     setError(null)
+    setErrorDetail(null)
     await signOut(auth)
   }, [])
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, profile, error, signIn, signOutUser }),
-    [status, user, profile, error, signIn, signOutUser],
+    () => ({ status, user, profile, error, errorDetail, signIn, signOutUser }),
+    [status, user, profile, error, errorDetail, signIn, signOutUser],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
