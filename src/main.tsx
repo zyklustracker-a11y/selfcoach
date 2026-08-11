@@ -30,7 +30,7 @@ void import('./app/App')
   })
   .catch((cause: unknown) => {
     root.render(
-      <div className="px-6.5 pt-16">
+      <div className="mx-auto max-w-app px-6.5 pt-16">
         <h1 className="font-serif text-screen-title text-text-primary">{t.configError.title}</h1>
         <p className="mt-3.5 text-body text-text-secondary">{t.configError.body}</p>
         <p className="mt-6.5 font-mono text-caption text-danger">

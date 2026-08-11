@@ -14,7 +14,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   if (status === 'loading' || status === 'signingIn') {
     return (
-      <div className="flex min-h-full items-center justify-center px-6.5">
+      <div className="mx-auto flex min-h-full max-w-app items-center justify-center px-6.5">
         <p className="font-mono text-caption uppercase text-text-muted">{t.auth.checking}</p>
       </div>
     )

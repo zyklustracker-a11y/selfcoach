@@ -72,6 +72,12 @@ export default {
       minHeight: {
         touch: '44px',
       },
+      maxWidth: {
+        // The whole design is written for a 390px phone. 440px is the widest
+        // iPhone, so this never constrains a phone — it only stops the layout from
+        // stretching across a desktop window.
+        app: '440px',
+      },
       transitionTimingFunction: {
         sheet: 'cubic-bezier(.32,.72,0,1)',
       },

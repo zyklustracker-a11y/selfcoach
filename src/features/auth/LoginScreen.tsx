@@ -18,7 +18,7 @@ export function LoginScreen() {
 
   return (
     <div
-      className="flex min-h-full flex-col justify-between px-6.5"
+      className="mx-auto flex min-h-full max-w-app flex-col justify-between px-6.5"
       style={{
         paddingTop: 'max(64px, calc(env(safe-area-inset-top) + 56px))',
         paddingBottom: 'calc(32px + env(safe-area-inset-bottom))',

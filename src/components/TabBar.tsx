@@ -18,7 +18,7 @@ export interface TabBarProps {
 export function TabBar({ items, activeKey, onSelect }: TabBarProps) {
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-bg-base"
+      className="fixed bottom-0 left-1/2 z-30 w-full max-w-app -translate-x-1/2 border-t border-border bg-bg-base"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="flex h-14">

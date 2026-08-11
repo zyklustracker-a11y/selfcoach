@@ -31,7 +31,7 @@ export function AppShell() {
 
   return (
     <BooksProvider>
-      <div className="flex min-h-full flex-col">
+      <div className="mx-auto flex min-h-full max-w-app flex-col">
         <header
           className="flex items-start justify-end px-6.5"
           style={{ paddingTop: 'max(8px, env(safe-area-inset-top))' }}
