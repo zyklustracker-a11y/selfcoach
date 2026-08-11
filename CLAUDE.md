@@ -16,13 +16,17 @@ Diese Datei ist verbindlich für die gesamte Projektlaufzeit.
 
 ## 1. Verbindliche Quellen
 
-| Quelle | Rolle | Status |
-|---|---|---|
-| Produktkonzept (Kapitel 5–11) | Fachliche Grundlage: Features, Datenmodell, Screens, Rules | **liegt noch nicht im Repo** |
-| `DESIGN.md` | Designsprache: Farben, Typografie, Spacing, Komponenten | vorhanden |
-| `docs/design/` | Visuelle Referenz der Screens (Richtung 1a „Die Seite") | vorhanden |
+| Quelle | Rolle |
+|---|---|
+| `docs/Produktkonzept.md` | Fachliche Grundlage: Features, Datenmodell, Screens, Rules (V2.0, ohne KI) |
+| `DESIGN.md` | Designsprache: Farben, Typografie, Spacing, Komponenten |
+| `docs/design/` | Visuelle Referenz der Screens (Richtung 1a „Die Seite") |
 
-Bei Widerspruch zwischen Konzept und Design gilt: **fragen, nicht entscheiden.**
+Zuständigkeit bei Widerspruch:
+- **Was** gebaut wird und **wie es sich verhält** → Produktkonzept.
+- **Wie es aussieht** → `DESIGN.md`. Die Spezifikation ist konkreter als Kapitel 7.3 und gewinnt
+  bei rein visuellen Fragen (z. B. Tab-Bar ohne Icons statt der Emoji-Skizze in Kapitel 7.1).
+- Widersprüche in der **Sache** werden **gefragt, nicht entschieden.**
 
 Aus `DESIGN.md` werden keine Werte abgeleitet, geraten oder gerundet. Farben, Größen,
 Abstände, Radien und Zustände werden exakt so übernommen, wie sie dort stehen.
@@ -95,28 +99,57 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 - `deleteUser` verlangt einen frischen Login (`reauthenticateWithRedirect`).
 - Ohne Servercode kann die PWA zu einer festen Uhrzeit nichts auslösen. Erinnerungen können
   nur passiv beim Öffnen der App erscheinen.
+- Firestore kann nicht joinen. Filter, die Einträge über den Status ihrer To-dos einschränken,
+  laufen zwingend clientseitig.
+- `bookTitle` liegt denormalisiert im Eintrag. Bei Titeländerung ist ein Batch-Update fällig
+  (Konzept 9).
+- Firebase App Check (Konzept 10, optional) zieht reCAPTCHA als externen Dienst nach sich —
+  daher in V1 nicht einbauen.
 
 ---
 
-## 7. Offene Fragen an den Nutzer
+## 7. Entscheidungen und offene Fragen
 
-Diese Punkte sind ungeklärt. Sie werden **nicht eigenmächtig entschieden**.
+### 7.1 Entschieden
 
-1. Produktkonzept fehlt im Repo (Kapitel 5, 6.2–6.7, 7.2, 8.4, 9, 10, 11).
-2. Firebase-Werte für `.env.local`.
-3. Wochenreview: sechs oder sieben Leitfragen?
-4. Wochenreview: ab Samstag oder ab Sonntag zugänglich?
-5. Schriften: Google Fonts widerspricht „keine externen APIs außer Firebase" →
-   Vorschlag `@fontsource` (selbst gehostet, offline-fähig).
-6. Erinnerungszeit ohne Server nur passiv möglich — behalten oder streichen?
-7. Wo leben die Einstellungen? Die Tab-Bar hat nur vier Spalten.
-8. Streak-Definition (was zählt als erfüllte Woche?).
-9. Buch-Felder: Gesamtseitenzahl und aktuelle Seite — woher kommt der Fortschritt?
-10. Heute-Screen: Richtung 1a „Die Seite" bestätigen (statt 1b „Das Pult").
-11. Tailwind-Version: 3 (wie in `DESIGN.md` vorausgesetzt) oder 4?
-12. Account-Löschung ohne Server ist nicht atomar — akzeptiert?
-13. Wichtigkeitsskala: welcher Wertebereich?
-14. Bewertungsskala 0–3 für Vorsätze: Bedeutung der Stufen.
+| Frage | Antwort | Quelle |
+|---|---|---|
+| Anzahl Leitfragen im Wochenreview | **sechs** (Mockup „Frage 5 von 7" ist überholt) | Nutzer, 11.08.2026 |
+| Wochenreview zugänglich | ab **Samstag**, Erinnerung Sonntagabend | Konzept 6.5 |
+| Ort der Einstellungen | Icon in der **Kopfzeile**, nicht in der Tab-Bar | Konzept 7.1 |
+| Streak-Art | **Wochenstreak**, kein Tagesstreak | Konzept 6.8 |
+| Push-Erinnerungen | **V2.** In V1 nur `reminderTime` speichern + In-App-Hinweis | Konzept 5/11 |
+| Wichtigkeitsskala | **1–3**, Wiedervorlage ab ≥ 2 | Konzept 6.3/6.7 |
+| Sprache | UI Deutsch, für Englisch vorbereitet | Nutzer |
+| Heute-Screen | Richtung **1a „Die Seite"** | `DESIGN.md` |
+
+### 7.2 Blockierend — vor Phase 0 zu klären
+
+1. **App-Name.** „ReadFlect" ist laut Konzept 14.3 ein Platzhalter. Bestimmt Manifest,
+   `<title>`, `package.json` und Startbildschirm-Label.
+2. **Firebase-Werte** für `.env.local`: `apiKey`, `authDomain`, `projectId`, `storageBucket`,
+   `messagingSenderId`, `appId`.
+3. **Firestore-Region** muss beim Anlegen auf `eur3` oder `europe-west3` stehen.
+   **Später nicht mehr änderbar** (Konzept 12).
+4. **Schriften.** `DESIGN.md` bindet Google Fonts ein, § 2 dieser Datei verbietet externe
+   Dienste. Vorschlag: `@fontsource` (identische Schriften, selbst gehostet, offline).
+5. **Tailwind-Version.** `DESIGN.md` schreibt `theme.extend.colors` → Tailwind 3.
+
+### 7.3 Später zu klären — jeweils vor der genannten Phase
+
+| # | Frage | Phase |
+|---|---|---|
+| 6 | `book_summary` erzeugt einen Eintrag, passt aber nicht in die Pflichtkette `learning`/`meaning`/`action` (Konzept 6.2 vs. 9 vs. 10). Wie abbilden? | 3 |
+| 7 | `currentPage` des Buchs: manuell pflegen oder automatisch aus `pageTo` des letzten Eintrags? | 3 |
+| 8 | Seitenangabe im Eintragsformular: ein Feld oder `pageFrom`/`pageTo` als Bereich? | 4 |
+| 9 | Wiedervorlage schon in V1 statt V2? Konzept 6.7/15.3 empfiehlt es dringend, das Heute-Mockup zeigt sie bereits. | 4 |
+| 10 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
+| 11 | Streak: was zählt als erfüllte Woche (≥ 1 Eintrag? abgeschlossenes Review?) | 5 |
+| 12 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
+| 13 | „Leitfragen bearbeiten" kann nur für die Freitextfragen 2–5 gelten; Frage 1 (Auswahl) und 6 (Skala) haben feste UI. Bestätigen. | 7 |
+| 14 | Bedeutung der Stufen 0–3 bei der Vorsatzbewertung. | 7 |
+| 15 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
+| 16 | Fortschritt des aktiven Buchs: Konzept 6.8 sagt „Fortschrittsbalken", Richtung 1a zeigt eine Mono-Zeile. | 8 |
 
 ---
 
