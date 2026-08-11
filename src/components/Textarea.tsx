@@ -7,8 +7,8 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   error?: string
   /** Shows a character counter in the lower right corner. */
   showCount?: boolean
-  /** The review answer field is one step larger than an entry field. */
-  size?: 'entry' | 'review'
+  /** `lead` is field 03, the heaviest text on the screen; `review` is the answer field. */
+  size?: 'entry' | 'lead' | 'review'
   /**
    * Borderless variant for the three chained entry fields: they sit directly on
    * bg-base and only grow a border while focused (DESIGN.md, prose rule 1).
@@ -60,9 +60,10 @@ export function Textarea({
           onChange={onChange}
           rows={1}
           className={cx(
-            'block min-h-[120px] w-full resize-none font-serif text-text-primary caret-accent',
+            'block w-full resize-none font-serif text-text-primary caret-accent',
+            bare ? 'min-h-[64px]' : 'min-h-[120px]',
             'focus:outline-none disabled:opacity-45',
-            size === 'review' ? 'text-review-answer' : 'text-input-serif',
+            size === 'review' ? 'text-review-answer' : size === 'lead' ? 'text-entry-lead' : 'text-input-serif',
             bare
               ? 'border border-transparent bg-transparent p-0 focus:border-accent'
               : 'rounded-xl border bg-bg-elevated p-4',

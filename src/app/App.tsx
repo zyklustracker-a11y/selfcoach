@@ -2,10 +2,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { AuthGuard, AuthProvider, LoginScreen } from '@/features/auth'
 import { BookDetailScreen, BookFormScreen, BooksListScreen } from '@/features/books'
+import { EntryDetailScreen, EntryFormScreen } from '@/features/entries'
 import { t } from '@/lib/strings'
 
 import { AppShell } from './AppShell'
 import { ComingSoonScreen } from './ComingSoonScreen'
+import { TodayScreen } from './TodayScreen'
 import { StyleguideScreen } from './StyleguideScreen'
 
 export function App() {
@@ -24,7 +26,10 @@ export function App() {
               </AuthGuard>
             }
           >
-            <Route path="/" element={<ComingSoonScreen note={t.comingSoon.today} />} />
+            <Route path="/" element={<TodayScreen />} />
+            <Route path="/entries/new" element={<EntryFormScreen />} />
+            <Route path="/entries/:entryId" element={<EntryDetailScreen />} />
+            <Route path="/entries/:entryId/edit" element={<EntryFormScreen />} />
             <Route path="/books" element={<BooksListScreen />} />
             <Route path="/books/new" element={<BookFormScreen />} />
             <Route path="/books/:bookId" element={<BookDetailScreen />} />

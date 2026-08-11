@@ -5,6 +5,7 @@ import { BottomSheet, Button, TabBar } from '@/components'
 import { GearIcon } from '@/components/GearIcon'
 import { useAuth } from '@/features/auth'
 import { BooksProvider } from '@/features/books'
+import { EntriesProvider } from '@/features/entries'
 import { t } from '@/lib/strings'
 
 const TABS = [
@@ -31,6 +32,7 @@ export function AppShell() {
 
   return (
     <BooksProvider>
+      <EntriesProvider>
       <div className="mx-auto flex min-h-full max-w-app flex-col">
         <header
           className="flex items-start justify-end px-6.5"
@@ -62,6 +64,7 @@ export function AppShell() {
           </div>
         </BottomSheet>
       </div>
+      </EntriesProvider>
     </BooksProvider>
   )
 }

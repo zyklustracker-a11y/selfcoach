@@ -40,6 +40,42 @@ service cloud.firestore {
         allow read, delete: if isOwner(userId);
         allow create, update: if isOwner(userId) && isValidBook(request.resource.data);
       }
+
+      match /entries/{entryId} {
+        function isFilledText(value, maxLength) {
+          return value is string && value.size() > 0 && value.size() <= maxLength;
+        }
+
+        function isOptionalString(value, maxLength) {
+          return value == null || (value is string && value.size() <= maxLength);
+        }
+
+        // Required fields depend on the type (CLAUDE.md 7.1a). An insight carries
+        // the three-part chain; a book summary only the closing thought, because
+        // the actions from that book already became entries of their own.
+        function isValidEntry(d) {
+          return d.type in ['insight', 'book_summary']
+            && (d.type != 'insight' || (
+                 isFilledText(d.learning, 5000)
+              && isFilledText(d.meaning, 5000)
+              && isFilledText(d.action, 5000)))
+            && (d.type != 'book_summary' || (
+                 isFilledText(d.summary, 5000)
+              && isOptionalString(d.meaning, 5000)
+              && isOptionalString(d.action, 5000)))
+            && isOptionalString(d.bookId, 200)
+            && isOptionalString(d.bookTitle, 300)
+            && isOptionalString(d.quote, 5000)
+            && (d.page == null || (d.page is int && d.page > 0 && d.page < 100000))
+            && d.tags is list && d.tags.size() <= 30
+            && d.keywords is list && d.keywords.size() <= 200
+            && d.dayKey is string && d.dayKey.size() == 10
+            && d.weekKey is string && d.weekKey.size() == 8;
+        }
+
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidEntry(request.resource.data);
+      }
     }
   }
 }

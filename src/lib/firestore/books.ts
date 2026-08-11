@@ -142,3 +142,14 @@ async function reconcileActive(uid: string, touchedId: string | null): Promise<v
 }
 
 export type { BookStatus }
+
+/** Links a finished book to the `book_summary` entry written for it (concept 6.2). */
+export async function setBookSummaryEntry(
+  uid: string,
+  bookId: string,
+  entryId: string,
+): Promise<void> {
+  await writeBatch(db)
+    .update(bookRef(uid, bookId), { summaryEntryId: entryId, updatedAt: serverTimestamp() })
+    .commit()
+}

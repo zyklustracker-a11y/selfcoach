@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { BottomSheet, Button, TagChip } from '@/components'
 import { useAuth } from '@/features/auth'
+import { EntryRow, useEntriesForBook } from '@/features/entries'
 import { deleteBook, setActiveBook } from '@/lib/firestore/books'
 import { t } from '@/lib/strings'
 import type { Timestamp } from 'firebase/firestore'
@@ -24,6 +25,7 @@ export function BookDetailScreen() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const book = useBook(bookId)
+  const entries = useEntriesForBook(bookId)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -78,7 +80,41 @@ export function BookDetailScreen() {
         {book.isbn && <Row label={t.books.field.isbn} value={book.isbn} />}
       </dl>
 
+      <section className="mt-[30px] border-t border-border pt-[30px]">
+        <h2 className="font-mono text-section uppercase text-text-muted">{t.entries.forBook}</h2>
+        {entries.length === 0 ? (
+          <p className="mt-2 text-body text-text-muted">{t.entries.emptyForBook}</p>
+        ) : (
+          <ul className="mt-2">
+            {entries.map((entry) => (
+              <li key={entry.id}>
+                <EntryRow entry={entry} showMeta={false} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       <div className="mt-[30px] space-y-3 border-t border-border pt-[30px]">
+        {book.status === 'finished' &&
+          (book.summaryEntryId ? (
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => navigate(`/entries/${book.summaryEntryId}`)}
+            >
+              {t.entries.summaryExists}
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => navigate(`/entries/new?summaryFor=${book.id}`)}
+            >
+              {t.entries.writeSummary}
+            </Button>
+          ))}
+
         {book.status === 'reading' && !book.isActive && (
           <Button
             variant="secondary"

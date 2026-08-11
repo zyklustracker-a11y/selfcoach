@@ -99,6 +99,8 @@ Diese Punkte werden **in der Phase mitgebaut, in der sie anfallen** — nie am E
 - `deleteUser` verlangt einen frischen Login (`reauthenticateWithRedirect`).
 - Ohne Servercode kann die PWA zu einer festen Uhrzeit nichts auslösen. Erinnerungen können
   nur passiv beim Öffnen der App erscheinen.
+- Der Heute-Screen (Konzept 6.8) hat im Phasenplan keine eigene Phase. Er wächst stückweise:
+  Phase 4 aktives Buch und heutige Einträge, Phase 5 To-dos, Phase 7 Reviewkarte, Phase 9 Rückblende.
 - Firestore kann nicht joinen. Filter, die Einträge über den Status ihrer To-dos einschränken,
   laufen zwingend clientseitig.
 - `bookTitle` liegt denormalisiert im Eintrag. Bei Titeländerung ist ein Batch-Update fällig
@@ -198,7 +200,7 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 | 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | **fertig** |
 | 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — auf dem iPhone geprüft |
 | 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | **fertig** — Rules deployt, auf dem iPhone geprüft |
-| 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | offen |
+| 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | **fertig** — Rules deployen nicht vergessen |
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | offen |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | offen |
 | 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | offen |
