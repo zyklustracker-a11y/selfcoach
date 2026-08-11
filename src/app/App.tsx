@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthGuard, AuthProvider, LoginScreen } from '@/features/auth'
 import { BookDetailScreen, BookFormScreen, BooksListScreen } from '@/features/books'
 import { EntryDetailScreen, EntryFormScreen } from '@/features/entries'
+import { TodosScreen } from '@/features/todos'
 import { t } from '@/lib/strings'
 
 import { AppShell } from './AppShell'
@@ -35,7 +36,7 @@ export function App() {
             <Route path="/books/:bookId" element={<BookDetailScreen />} />
             <Route path="/books/:bookId/edit" element={<BookFormScreen />} />
             <Route path="/archive" element={<ComingSoonScreen note={t.comingSoon.archive} />} />
-            <Route path="/todos" element={<ComingSoonScreen note={t.comingSoon.todos} />} />
+            <Route path="/todos" element={<TodosScreen />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

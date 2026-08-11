@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { BottomSheet, Button, TagChip } from '@/components'
 import { useAuth } from '@/features/auth'
+import { TodoItem, useTodosForEntry } from '@/features/todos'
 import { deleteEntry } from '@/lib/firestore/entries'
 import { t } from '@/lib/strings'
 
@@ -15,6 +16,7 @@ export function EntryDetailScreen() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const entry = useEntry(entryId)
+  const derivedTodos = useTodosForEntry(entryId)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -65,6 +67,19 @@ export function EntryDetailScreen() {
             <TagChip key={tag}>{tag}</TagChip>
           ))}
         </div>
+      )}
+
+      {derivedTodos.length > 0 && (
+        <section className="mt-[30px] border-t border-border pt-[30px]">
+          <h2 className="font-mono text-section uppercase text-text-muted">{t.todos.derived}</h2>
+          <ul className="mt-2">
+            {derivedTodos.map((todo) => (
+              <li key={todo.id}>
+                <TodoItem todo={todo} checkable={todo.kind !== 'principle'} />
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <div className="mt-[30px] space-y-3 border-t border-border pt-[30px]">

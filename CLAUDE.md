@@ -201,7 +201,7 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 | 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — auf dem iPhone geprüft |
 | 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | **fertig** — Rules deployt, auf dem iPhone geprüft |
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | **fertig** — Rules deployen nicht vergessen |
-| 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | offen |
+| 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | **fertig** |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | offen |
 | 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | offen |
 | 8 | Feinschliff: Offline-Indikator, Leerzustände, Onboarding, Einstellungen, Export, Deploy | offen |

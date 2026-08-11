@@ -11,4 +11,5 @@ export type {
   InsightEntry,
   InsightInput,
 } from './entry'
+export type { Todo, TodoInput, TodoKind, TodoStatus, TodoWithId } from './todo'
 export type { Theme, UserDocument, UserSettings, UserStats } from './user'

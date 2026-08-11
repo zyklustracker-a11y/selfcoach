@@ -6,9 +6,10 @@ import { useAuth } from '@/features/auth'
 import { useBooks } from '@/features/books'
 import { setBookSummaryEntry } from '@/lib/firestore/books'
 import { createEntry, updateEntry } from '@/lib/firestore/entries'
+import { createTodo } from '@/lib/firestore/todos'
 import { cx } from '@/lib/cx'
 import { t } from '@/lib/strings'
-import type { EntryInput } from '@/types'
+import type { EntryInput, TodoKind } from '@/types'
 
 import { useEntries, useEntry } from './EntriesProvider'
 import { clearDraft, useEntryDraft, useRestoredDraft } from './useEntryDraft'
@@ -55,6 +56,11 @@ export function EntryFormScreen() {
   const [draftNoticeOpen, setDraftNoticeOpen] = useState(Boolean(draft))
   const [errors, setErrors] = useState<Errors>({})
   const [saving, setSaving] = useState(false)
+
+  // Concept 6.3, step 7: the action becomes a task without retyping it.
+  const [todoOpen, setTodoOpen] = useState(false)
+  const [todoTitle, setTodoTitle] = useState('')
+  const [todoKind, setTodoKind] = useState<TodoKind>('daily')
 
   useEntryDraft({ bookId, learning, meaning, action, quote, page, tags }, draftable)
 
@@ -137,6 +143,15 @@ export function EntryFormScreen() {
         const created = await createEntry(user.uid, input, book?.title ?? null)
         // The book points at its summary rather than holding a second copy of it.
         if (isSummary && bookId) await setBookSummaryEntry(user.uid, bookId, created)
+        if (todoOpen && todoTitle.trim()) {
+          await createTodo(user.uid, {
+            title: todoTitle.trim(),
+            notes: null,
+            kind: todoKind,
+            sourceEntryId: created,
+            bookId,
+          })
+        }
         clearDraft()
         navigate(`/entries/${created}`, { replace: true })
       }
@@ -261,7 +276,60 @@ export function EntryFormScreen() {
         </>
       )}
 
-      <div className="mt-[30px] border-t border-border pt-5">
+      {!isEdit && !isSummary && (
+        <div className="mt-7 border-t border-border pt-5">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              const next = !todoOpen
+              setTodoOpen(next)
+              if (next && !todoTitle.trim()) setTodoTitle(action.trim())
+            }}
+          >
+            {todoOpen ? t.todos.createOpen : t.todos.create}
+          </Button>
+
+          {todoOpen && (
+            <div className="mt-3.5 space-y-3.5">
+              <Input
+                label={t.todos.title}
+                value={todoTitle}
+                onChange={(event) => setTodoTitle(event.target.value)}
+              />
+              <fieldset>
+                <legend className="mb-2 block font-mono text-caption uppercase text-text-muted">
+                  {t.todos.kind}
+                </legend>
+                <div className="space-y-2">
+                  {(['daily', 'principle'] as const).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setTodoKind(option)}
+                      aria-pressed={todoKind === option}
+                      className={cx(
+                        'block w-full rounded-md border px-3.5 py-2.5 text-left',
+                        todoKind === option
+                          ? 'border-accent bg-bg-hover'
+                          : 'border-border-strong',
+                      )}
+                    >
+                      <span className="block text-body text-text-primary">
+                        {option === 'daily' ? t.todos.kindDaily : t.todos.kindPrinciple}
+                      </span>
+                      <span className="mt-0.5 block text-field-error text-text-muted">
+                        {option === 'daily' ? t.todos.kindDailyHint : t.todos.kindPrincipleHint}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="mt-7 border-t border-border pt-5">
         <Button variant="ghost" onClick={() => setShowExtras(!showExtras)}>
           {showExtras ? t.entries.moreOpen : t.entries.more}
         </Button>

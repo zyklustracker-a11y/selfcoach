@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Fab } from '@/components'
 import { useBooks } from '@/features/books'
 import { EntryRow, useEntries } from '@/features/entries'
+import { TodoItem, useTodos } from '@/features/todos'
 import { t } from '@/lib/strings'
 
 const TODAY = new Intl.DateTimeFormat('de-DE', {
@@ -20,6 +21,7 @@ export function TodayScreen() {
   const navigate = useNavigate()
   const { activeBook } = useBooks()
   const { today } = useEntries()
+  const { today: todosToday } = useTodos()
 
   return (
     <div className="px-6.5" style={{ paddingBottom: 'calc(130px + env(safe-area-inset-bottom))' }}>
@@ -61,6 +63,19 @@ export function TodayScreen() {
           </>
         )}
       </div>
+
+      {todosToday.length > 0 && (
+        <section className="mt-[30px] border-t border-border pt-[30px]">
+          <h2 className="font-mono text-section uppercase text-text-muted">{t.today.todos}</h2>
+          <ul className="mt-2">
+            {todosToday.map((todo) => (
+              <li key={todo.id}>
+                <TodoItem todo={todo} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <Fab label={t.today.newEntry} onClick={() => navigate('/entries/new')} />
     </div>

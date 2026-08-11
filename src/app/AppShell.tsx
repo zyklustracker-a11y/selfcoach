@@ -6,6 +6,7 @@ import { GearIcon } from '@/components/GearIcon'
 import { useAuth } from '@/features/auth'
 import { BooksProvider } from '@/features/books'
 import { EntriesProvider } from '@/features/entries'
+import { TodosProvider } from '@/features/todos'
 import { t } from '@/lib/strings'
 
 const TABS = [
@@ -33,6 +34,7 @@ export function AppShell() {
   return (
     <BooksProvider>
       <EntriesProvider>
+        <TodosProvider>
       <div className="mx-auto flex min-h-full max-w-app flex-col">
         <header
           className="flex items-start justify-end px-6.5"
@@ -64,6 +66,7 @@ export function AppShell() {
           </div>
         </BottomSheet>
       </div>
+        </TodosProvider>
       </EntriesProvider>
     </BooksProvider>
   )
