@@ -27,6 +27,8 @@ export interface UserDocument {
   email: string | null
   photoURL: string | null
   createdAt: Timestamp
+  /** Null until the one-time onboarding is finished (concept 7.2, screen 2). */
+  onboardedAt: Timestamp | null
   settings: UserSettings
   stats: UserStats
 }

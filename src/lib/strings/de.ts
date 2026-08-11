@@ -190,14 +190,55 @@ export const de = {
     startedAt: 'Begonnen',
     finishedAt: 'Beendet am',
   },
-  account: {
-    title: 'Konto',
-    note: 'Der Einstellungen-Screen kommt in Phase 8. Bis dahin steht hier nur die Abmeldung.',
+  settings: {
+    theme: 'Darstellung',
+    themeDark: 'Dunkel',
+    themeLight: 'Hell',
+    questions: 'Leitfragen im Wochenreview',
+    questionFixed: 'Frage 1 — bleibt die Auswahl der Wocheneinträge',
+    export: 'Export',
+    exportHint: 'Alles, was du geschrieben hast — als Datei zum Mitnehmen.',
+    account: 'Konto',
+    delete: {
+      action: 'Konto löschen',
+      title: 'Konto wirklich löschen?',
+      body: 'Bücher, Einträge, To-dos und Reviews werden dauerhaft gelöscht. Das lässt sich nicht rückgängig machen. Exportiere vorher, wenn du etwas behalten willst.',
+      confirm: 'Alles löschen',
+      cancel: 'Behalten',
+      reauth:
+        'Deine Daten sind gelöscht. Für das Konto selbst verlangt Google eine frische Anmeldung: einmal abmelden, neu anmelden, dann noch einmal löschen.',
+      failed: 'Das Löschen ist nicht vollständig durchgelaufen. Versuch es noch einmal.',
+    },
   },
-  comingSoon: {
-    today: 'Der Heute-Screen entsteht mit den kommenden Phasen.',
-    archive: 'Das Archiv kommt in Phase 6.',
-    todos: 'Die To-dos kommen in Phase 5.',
+  offline: {
+    indicator: 'Offline',
+    hint: 'Änderungen werden gespeichert und später übertragen.',
+  },
+  install: {
+    title: 'Auf den Home-Bildschirm legen',
+    body: 'In Safari unten auf „Teilen" tippen, dann „Zum Home-Bildschirm". Von dort startet die App im Vollbild und funktioniert offline.',
+    dismiss: 'Später',
+  },
+  onboarding: {
+    slides: [
+      {
+        title: 'Lesen verändert nichts, solange es beim Lesen bleibt.',
+        body: 'ReadCoach führt jede Erkenntnis bis zur Handlung: Was habe ich gelernt, was heißt das für mich, was mache ich ab morgen anders. Ein Eintrag ohne den dritten Schritt gilt als unvollständig.',
+      },
+      {
+        title: 'Täglich kurz, wöchentlich tief.',
+        body: 'Unter der Woche kostet ein Eintrag keine zwei Minuten. Am Wochenende führt dich ein Review durch fünf Fragen zu dem, was du festgehalten hast.',
+      },
+      {
+        title: 'Nichts verschwindet im Archiv.',
+        body: 'Was du dir vorgenommen hast, kommt nach 7, 30 und 90 Tagen von selbst zurück — mit der einzigen Frage, die zählt: Lebst du das noch?',
+      },
+    ],
+    bookTitle: 'Was liest du gerade?',
+    bookBody:
+      'Neue Einträge werden diesem Buch automatisch zugeordnet. Du kannst das jederzeit ändern.',
+    startWithBook: 'Los geht’s',
+    skipBook: 'Später anlegen',
   },
   archive: {
     count: (n: number) => (n === 1 ? '1 EINTRAG' : `${n} EINTRÄGE`),

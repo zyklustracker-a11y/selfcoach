@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { BottomSheet, Button, TabBar } from '@/components'
+import { TabBar } from '@/components'
 import { GearIcon } from '@/components/GearIcon'
 import { useAuth } from '@/features/auth'
 import { BooksProvider } from '@/features/books'
 import { EntriesProvider } from '@/features/entries'
+import { InstallHint } from '@/features/onboarding'
 import { ReviewsProvider } from '@/features/reviews'
 import { TodosProvider } from '@/features/todos'
+import { useOnline } from '@/lib/platform'
+import { applyTheme } from './theme'
 import { t } from '@/lib/strings'
 
 const TABS = [
@@ -18,17 +21,19 @@ const TABS = [
 ]
 
 /**
- * The frame every signed-in screen sits in: header with the settings gear, the
- * scrolling content, and the fixed tab bar.
- *
- * The gear opens a minimal account sheet for now — sign-out has to stay reachable.
- * Phase 8 replaces it with the real settings screen.
+ * The frame every signed-in screen sits in: header with the offline indicator and
+ * the settings gear, the scrolling content, and the fixed tab bar.
  */
 export function AppShell() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { user, signOutUser } = useAuth()
-  const [accountOpen, setAccountOpen] = useState(false)
+  const online = useOnline()
+  const { profile } = useAuth()
+
+  // Dark is the default until the stored preference arrives.
+  useEffect(() => {
+    if (profile) applyTheme(profile.settings.theme)
+  }, [profile])
 
   const activeTab = TABS.slice(1).find((tab) => pathname.startsWith(tab.key))?.key ?? '/'
 
@@ -37,37 +42,32 @@ export function AppShell() {
       <EntriesProvider>
         <TodosProvider>
           <ReviewsProvider>
-      <div className="mx-auto flex min-h-full max-w-app flex-col">
-        <header
-          className="flex items-start justify-end px-6.5"
-          style={{ paddingTop: 'max(8px, env(safe-area-inset-top))' }}
-        >
-          <button
-            type="button"
-            aria-label={t.nav.settings}
-            onClick={() => setAccountOpen(true)}
-            className="-mr-1 flex h-11 w-11 items-center justify-center text-text-muted active:text-text-primary"
-          >
-            <GearIcon className="h-[22px] w-[22px]" />
-          </button>
-        </header>
+            <div className="mx-auto flex min-h-full max-w-app flex-col">
+              <header
+                className="flex items-center justify-between px-6.5"
+                style={{ paddingTop: 'max(8px, env(safe-area-inset-top))' }}
+              >
+                {/* Offline is a state, not a failure — muted, never in danger red. */}
+                <span className="font-mono text-caption uppercase text-text-muted">
+                  {online ? '' : t.offline.indicator}
+                </span>
+                <button
+                  type="button"
+                  aria-label={t.nav.settings}
+                  onClick={() => navigate('/settings')}
+                  className="-mr-1 flex h-11 w-11 items-center justify-center text-text-muted active:text-text-primary"
+                >
+                  <GearIcon className="h-[22px] w-[22px]" />
+                </button>
+              </header>
 
-        <main className="flex-1">
-          <Outlet />
-        </main>
+              <main className="flex-1">
+                <Outlet />
+              </main>
 
-        <TabBar items={TABS} activeKey={activeTab} onSelect={(key) => navigate(key)} />
-
-        <BottomSheet open={accountOpen} onClose={() => setAccountOpen(false)} title={t.account.title}>
-          <div className="space-y-5 pb-2">
-            {user?.email && <p className="font-mono text-caption text-text-muted">{user.email}</p>}
-            <p className="text-body text-text-secondary">{t.account.note}</p>
-            <Button variant="secondary" fullWidth onClick={() => void signOutUser()}>
-              {t.auth.signOut}
-            </Button>
-          </div>
-        </BottomSheet>
-      </div>
+              <InstallHint />
+              <TabBar items={TABS} activeKey={activeTab} onSelect={(key) => navigate(key)} />
+            </div>
           </ReviewsProvider>
         </TodosProvider>
       </EntriesProvider>

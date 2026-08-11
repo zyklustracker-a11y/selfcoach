@@ -204,11 +204,11 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | **fertig** |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | **fertig** |
 | 7 | Wochenreview: geführter Ablauf, Vorbefüllung, `reviews/{weekKey}`, unterbrechbar | **fertig** |
-| 8 | Feinschliff: Offline-Indikator, Leerzustände, Onboarding, Einstellungen, Export, Deploy | offen |
+| 8 | Feinschliff: Offline-Indikator, Leerzustände, Onboarding, Einstellungen, Export, Deploy | **fertig** |
 | 9 | Wiedervorlage: `nextReviewAt`, Rückblende, `reviewHistory`, 7 → 30 → 90 Tage | offen |
 
-`/styleguide` aus Phase 1 ist eine **temporäre Route** und wird vor dem Deployment
-in Phase 8 zur Entscheidung gestellt.
+`/styleguide` bleibt erreichbar, ist aber **nirgends verlinkt** — Entwicklungswerkzeug,
+kein Teil der App.
 
 Seit Phase 2 importiert die App `src/lib/firebase.ts`. Ohne `.env.local` startet sie nicht
 mehr — auch der Styleguide nicht.

@@ -9,8 +9,14 @@ import { useAuth } from './useAuth'
  * While the redirect result is still being evaluated nothing may be decided yet —
  * rendering the login screen here would flash it at a user who is already signed in.
  */
-export function AuthGuard({ children }: { children: ReactNode }) {
-  const { status } = useAuth()
+export function AuthGuard({
+  children,
+  requireOnboarding = true,
+}: {
+  children: ReactNode
+  requireOnboarding?: boolean
+}) {
+  const { status, profile } = useAuth()
 
   if (status === 'loading' || status === 'signingIn') {
     return (
@@ -21,6 +27,12 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   }
 
   if (status === 'unauthenticated') return <Navigate to="/login" replace />
+
+  // Only once the profile is actually loaded — offline it may be null for a
+  // moment, and sending a returning user through onboarding would be wrong.
+  if (requireOnboarding && profile && profile.onboardedAt === null) {
+    return <Navigate to="/onboarding" replace />
+  }
 
   return <>{children}</>
 }

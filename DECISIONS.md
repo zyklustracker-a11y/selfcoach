@@ -154,3 +154,42 @@ es taucht deshalb nicht im Archiv auf, sondern nur als „Weitermachen".
 `DESIGN.md` erlaubt neben dem FAB genau eine akzentgetönte Fläche, und nennt die
 Wochenreview-Karte als diese Ausnahme. Gewählt: `bg-accent-quiet`, ab Samstag, sonntags mit
 „Sonntag" statt „Wochenreview" beschriftet. Dagegen spricht nichts.
+
+---
+
+## Phase 8 — Feinschliff (11.08.2026)
+
+### Kein Erinnerungszeit-Schritt im Onboarding
+Konzept 7.2 nennt für das Onboarding „3 Slides + erstes Buch + Erinnerungszeit wählen".
+Gewählt: drei Slides und das erste Buch, keine Erinnerungszeit. Grund: Erinnerungen sind
+gestrichen (`CLAUDE.md` 7.1), und nach einer Uhrzeit zu fragen, an der nichts passiert, ist
+eine Lüge im ersten Bildschirm. Dagegen spricht nichts.
+
+### Kontolöschung: erst Daten, dann Konto
+Gewählt: Alle Subcollections in Blöcken zu 400 löschen, dann das Nutzerdokument, dann
+`user.delete()`. Bei `auth/requires-recent-login` bleibt eine Meldung stehen, die zum
+Neuanmelden auffordert. Grund: Ohne Servercode gibt es kein rekursives Löschen; ein
+Neuanmelde-Redirect mitten im Löschvorgang wäre fragiler als der zweite Anlauf. Dagegen
+spricht, dass zwischen Datenlöschung und Kontolöschung ein Zustand existiert, in dem das Konto
+ohne Daten dasteht — vom Nutzer als „nicht atomar" akzeptiert.
+
+### Export über die Teilen-Ansicht, mit Download als Rückfall
+Gewählt: `navigator.share` mit Datei, wenn verfügbar, sonst ein Download-Link. Grund: iOS
+Safari kann Dateien nicht einfach herunterladen; die Teilen-Ansicht ist dort der native Weg.
+Dagegen spricht ein Codepfad mehr.
+
+### Offline-Anzeige stützt sich auf `navigator.onLine`
+Gewählt: der Browserzustand, nicht ein Firestore-Verbindungstest. Grund: Firestore hat keinen
+öffentlichen Verbindungsstatus, und ein selbstgebauter Ping wäre eine Behauptung mehr, die
+falsch sein kann. Dagegen spricht, dass „online" nicht heißt, dass Firestore erreichbar ist —
+deshalb ist der Text ein Hinweis, kein Versprechen.
+
+### `/styleguide` bleibt, aber unverlinkt
+Gewählt: Route behalten, nirgends in der Oberfläche verlinken. Grund: Sie ist beim
+Weiterbauen nützlich und kostet im Bundle fast nichts. Dagegen spricht, dass sie öffentlich
+erreichbar ist — sie zeigt keine Daten, nur Bausteine.
+
+### Diagnosezeile am Login wieder entfernt
+Sie hat ihren Zweck erfüllt (`auth/api-key-not-valid` sichtbar gemacht) und ist jetzt raus.
+Grund: Fehlercodes gehören nicht in eine Oberfläche, die abends im Bett benutzt wird.
+Dagegen spricht, dass die nächste Login-Störung wieder schwerer zu diagnostizieren ist.

@@ -4,7 +4,9 @@ import { AuthGuard, AuthProvider, LoginScreen } from '@/features/auth'
 import { BookDetailScreen, BookFormScreen, BooksListScreen } from '@/features/books'
 import { EntryDetailScreen, EntryFormScreen } from '@/features/entries'
 import { ArchiveScreen } from '@/features/archive'
+import { OnboardingScreen } from '@/features/onboarding'
 import { ReviewDetailScreen, ReviewFlowScreen } from '@/features/reviews'
+import { SettingsScreen } from '@/features/settings'
 import { TodosScreen } from '@/features/todos'
 
 import { AppShell } from './AppShell'
@@ -19,6 +21,14 @@ export function App() {
           <Route path="/login" element={<LoginScreen />} />
           {/* Temporary route from phase 1, deliberately reachable without a session. */}
           <Route path="/styleguide" element={<StyleguideScreen />} />
+          <Route
+            path="/onboarding"
+            element={
+              <AuthGuard requireOnboarding={false}>
+                <OnboardingScreen />
+              </AuthGuard>
+            }
+          />
 
           <Route
             element={
@@ -39,6 +49,7 @@ export function App() {
             <Route path="/reviews/current" element={<ReviewFlowScreen />} />
             <Route path="/reviews/:weekKey" element={<ReviewDetailScreen />} />
             <Route path="/todos" element={<TodosScreen />} />
+            <Route path="/settings" element={<SettingsScreen />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

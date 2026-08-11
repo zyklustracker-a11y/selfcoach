@@ -10,7 +10,7 @@ import { FirebaseError } from 'firebase/app'
 import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 
 import { auth } from '@/lib/firebase'
-import { ensureUserDocument } from '@/lib/firestore/users'
+import { ensureUserDocument, getUserDocument } from '@/lib/firestore/users'
 import { t } from '@/lib/strings'
 import type { UserDocument } from '@/types'
 
@@ -21,26 +21,10 @@ export interface AuthContextValue {
   user: User | null
   profile: UserDocument | null
   error: string | null
-  /**
-   * Technical detail behind `error`: where it happened and the Firebase code.
-   * Shown on the login screen because sign-in can only be reproduced on a phone,
-   * where there is no console to read. Remove with the polish phase.
-   */
-  errorDetail: string | null
   signIn: () => Promise<void>
   signOutUser: () => Promise<void>
-}
-
-function codeOf(cause: unknown): string {
-  if (cause instanceof FirebaseError) return cause.code
-  if (cause instanceof Error) return cause.name
-  return 'unbekannt'
-}
-
-/** A controlling service worker is a prime suspect whenever the redirect misbehaves. */
-function serviceWorkerState(): string {
-  if (!('serviceWorker' in navigator)) return 'sw:keiner'
-  return navigator.serviceWorker.controller ? 'sw:aktiv' : 'sw:inaktiv'
+  /** Re-reads users/{uid} after something changed it outside this provider. */
+  refreshProfile: () => Promise<void>
 }
 
 /**
@@ -81,7 +65,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<UserDocument | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [errorDetail, setErrorDetail] = useState<string | null>(null)
 
   useEffect(() => {
     let active = true
@@ -94,17 +77,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then((result) => {
         // Came back from Google with nothing to show for it — the redirect was
         // interrupted rather than rejected.
-        if (!result && wasRedirecting && active) {
-          setError(t.auth.error.generic)
-          setErrorDetail(`redirect · ohne Ergebnis · ${serviceWorkerState()}`)
-        }
+        if (!result && wasRedirecting && active) setError(t.auth.error.generic)
         return result
       })
       .catch((cause: unknown) => {
-        if (active) {
-          setError(describe(cause))
-          setErrorDetail(`redirect · ${codeOf(cause)} · ${serviceWorkerState()}`)
-        }
+        if (active) setError(describe(cause))
         return null
       })
 
@@ -143,7 +120,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async () => {
     setError(null)
-    setErrorDetail(null)
     setStatus('signingIn')
     const provider = new GoogleAuthProvider()
     try {
@@ -151,20 +127,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await signInWithRedirect(auth, provider)
     } catch (cause: unknown) {
       setError(describe(cause))
-      setErrorDetail(`start · ${codeOf(cause)} · ${serviceWorkerState()}`)
       setStatus('unauthenticated')
     }
   }, [])
 
+  const refreshProfile = useCallback(async () => {
+    const current = auth.currentUser
+    if (!current) return
+    setProfile(await getUserDocument(current.uid))
+  }, [])
+
   const signOutUser = useCallback(async () => {
     setError(null)
-    setErrorDetail(null)
     await signOut(auth)
   }, [])
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, profile, error, errorDetail, signIn, signOutUser }),
-    [status, user, profile, error, errorDetail, signIn, signOutUser],
+    () => ({ status, user, profile, error, signIn, signOutUser, refreshProfile }),
+    [status, user, profile, error, signIn, signOutUser, refreshProfile],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
