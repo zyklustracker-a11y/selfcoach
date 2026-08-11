@@ -29,6 +29,40 @@ export const de = {
     add: 'Hinzufügen',
     remove: 'Entfernen',
   },
+  auth: {
+    claim: 'Aus gelesenen Seiten gelebte Veränderung.',
+    intro:
+      'Jede Erkenntnis wird zu einer Handlung — und die wird überprüft. Deine Einträge bleiben in deinem eigenen Konto.',
+    signIn: 'Mit Google anmelden',
+    signOut: 'Abmelden',
+    checking: 'Einen Moment.',
+    signingIn: 'Anmeldung läuft.',
+    error: {
+      generic: 'Die Anmeldung hat nicht geklappt. Bitte versuch es noch einmal.',
+      network: 'Keine Verbindung. Die Anmeldung braucht einmal Netz.',
+      cancelled: 'Anmeldung abgebrochen.',
+      unauthorizedDomain:
+        'Diese Adresse ist in Firebase nicht als autorisierte Domain eingetragen.',
+    },
+  },
+  // Temporary screen for phase 2. The Heute screen replaces it in phase 3.
+  signedIn: {
+    label: 'Angemeldet',
+    note: 'Der Heute-Screen kommt in der nächsten Phase. Bis dahin zeigt diese Seite nur, dass Anmeldung und Nutzerdokument funktionieren.',
+    profileCreated: 'Nutzerdokument angelegt.',
+    profilePending: 'Nutzerdokument noch nicht gelesen — vermutlich offline.',
+  },
+  review: {
+    // The five guiding questions from concept 6.5. Question 6 was dropped with the
+    // 0-3 rating scale. Seeded into settings.reviewQuestions and editable later.
+    defaultQuestions: [
+      'Welche 3 Erkenntnisse dieser Woche waren die stärksten?',
+      'Was habe ich davon tatsächlich umgesetzt?',
+      'Wo habe ich es mir vorgenommen und nicht getan — und woran lag es ehrlich?',
+      'Welches Muster erkenne ich über die Woche hinweg?',
+      'Was ist mein einer Fokus für die kommende Woche?',
+    ],
+  },
   styleguide: {
     title: 'Styleguide',
     subtitle: 'Alle Bausteine in allen Zuständen. Temporär, verschwindet vor dem Release.',

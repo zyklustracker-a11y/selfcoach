@@ -181,7 +181,7 @@ Stelle tritt: **jeder Eintrag** bekommt `nextReviewAt`.
 |---|---|---|
 | 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | **fertig** — `.env.local` fehlt noch |
 | 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | **fertig** |
-| 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | offen |
+| 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — Login nur auf dem Gerät prüfbar |
 | 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | offen |
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | offen |
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | offen |
@@ -193,8 +193,12 @@ Stelle tritt: **jeder Eintrag** bekommt `nextReviewAt`.
 `/styleguide` aus Phase 1 ist eine **temporäre Route** und wird vor dem Deployment
 in Phase 8 zur Entscheidung gestellt.
 
-`src/lib/firebase.ts` ist geschrieben, wird aber noch nirgends importiert — so läuft der
-Styleguide ohne Zugangsdaten. Verdrahtet wird Firebase in Phase 2.
+Seit Phase 2 importiert die App `src/lib/firebase.ts`. Ohne `.env.local` startet sie nicht
+mehr — auch der Styleguide nicht.
+
+Deployment: `npm run deploy` (baut und lädt auf Firebase Hosting). `VITE_FIREBASE_AUTH_DOMAIN`
+muss **die Domain sein, von der ausgeliefert wird** (`readcoach-29227.web.app`), nicht
+`*.firebaseapp.com` — sonst zerlegt Safaris Tracking-Schutz `signInWithRedirect`.
 
 Icons und Startbilder werden aus `scripts/generate-app-icons.mjs` erzeugt (`npm run icons`),
 nicht von Hand gepflegt. Nach einer Farbänderung in `DESIGN.md` neu laufen lassen.

@@ -1,3 +1,5 @@
+import type { Theme } from '@/types'
+
 /**
  * Dark is the product default, light is the exception (DESIGN.md).
  * The palette lives in CSS custom properties; switching themes only toggles the
@@ -5,8 +7,6 @@
  *
  * The user-facing setting arrives with the settings screen in a later phase.
  */
-export type Theme = 'dark' | 'light'
-
 export const DEFAULT_THEME: Theme = 'dark'
 
 export function applyTheme(theme: Theme): void {

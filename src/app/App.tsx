@@ -1,18 +1,29 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
+import { AuthGuard, AuthProvider, LoginScreen } from '@/features/auth'
+
+import { SignedInScreen } from './SignedInScreen'
 import { StyleguideScreen } from './StyleguideScreen'
 
-/**
- * Phase 1 ships the design system only. The router exists so /styleguide can be
- * opened on the phone; the real screens replace this from phase 2 on.
- */
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/styleguide" element={<StyleguideScreen />} />
-        <Route path="*" element={<Navigate to="/styleguide" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          {/* Temporary route from phase 1, deliberately reachable without a session. */}
+          <Route path="/styleguide" element={<StyleguideScreen />} />
+          <Route
+            path="/"
+            element={
+              <AuthGuard>
+                <SignedInScreen />
+              </AuthGuard>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }

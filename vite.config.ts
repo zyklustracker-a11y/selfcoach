@@ -4,6 +4,18 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // Firebase is the bulk of the bundle and changes only on dependency bumps.
+        // Keeping it separate means an app-code deploy re-downloads a small chunk
+        // instead of invalidating everything in the service worker precache.
+        manualChunks: {
+          firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

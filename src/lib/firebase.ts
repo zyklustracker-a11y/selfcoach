@@ -1,5 +1,11 @@
 import { initializeApp, type FirebaseOptions } from 'firebase/app'
 import {
+  browserLocalPersistence,
+  browserPopupRedirectResolver,
+  initializeAuth,
+  type Auth,
+} from 'firebase/auth'
+import {
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
@@ -41,4 +47,18 @@ export const firebaseApp = initializeApp(options)
  */
 export const db: Firestore = initializeFirestore(firebaseApp, {
   localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+})
+
+/**
+ * Persistence is set at initialisation rather than through a later setPersistence
+ * call, so no sign-in can race an unconfigured Auth instance. `browserLocalPersistence`
+ * keeps the session across launches — no daily re-login (concept 6.1).
+ *
+ * The redirect resolver has to be passed explicitly here: with `initializeAuth`
+ * nothing is registered by default, and `signInWithRedirect` would fail with
+ * auth/argument-error.
+ */
+export const auth: Auth = initializeAuth(firebaseApp, {
+  persistence: browserLocalPersistence,
+  popupRedirectResolver: browserPopupRedirectResolver,
 })
