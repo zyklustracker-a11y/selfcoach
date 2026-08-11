@@ -186,7 +186,6 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 
 | # | Frage | Phase |
 |---|---|---|
-| 1 | Entwürfe laut Konzept 11 „zusätzlich früh nach Firestore schreiben" — kollidiert mit den Pflichtfeld-Rules. Nur `localStorage`? | 4 |
 | 2 | Archivfilter „nur umgesetzte / nur nicht umgesetzte" braucht einen Join über To-dos — nur clientseitig möglich. Bestätigen. | 6 |
 | 3 | Unterbrochenes Review: Zwischenstand in `localStorage` oder als `reviews/{weekKey}` mit `completedAt: null`? | 7 |
 | 4 | Bei mehreren fälligen Rückblenden an einem Tag: wie viele zeigt der Heute-Screen (Vorschlag: genau eine, älteste zuerst)? | 9 |
@@ -197,8 +196,8 @@ Nichts. Firebase-Projekt, Region, Anmeldeanbieter und Hosting stehen.
 |---|---|---|
 | 0 | Setup: Vite, React, TS, Tailwind, `vite-plugin-pwa`, Firebase, Struktur, Offline-Persistenz | **fertig** — `.env.local` fehlt noch |
 | 1 | Design-System: Tokens, Typografie, Spacing, UI-Primitives, `/styleguide` | **fertig** |
-| 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — Login nur auf dem Gerät prüfbar |
-| 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | **fertig** — Rules müssen noch deployt werden |
+| 2 | Authentifizierung: Google Sign-In per Redirect, `useAuth`, Guard, `users/{uid}` | **fertig** — auf dem iPhone geprüft |
+| 3 | Bücher: CRUD, Liste nach Status, Detail, Formular, aktives Buch, Firestore Rules | **fertig** — Rules deployt, auf dem iPhone geprüft |
 | 4 | Einträge: Pflichtkette, Zusatzfelder, Tags, `keywords`/`dayKey`/`weekKey`, Autosave | offen |
 | 5 | To-dos: `daily` und `principle`, Ursprungsverweis, Übertrag, To-do-Screen | offen |
 | 6 | Archiv und Suche: fünf Ansichten, Filter, Detail, Fuse.js, Composite-Indizes | offen |
